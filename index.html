@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Markhor Signals – CALL / PUT Technical Signals</title>
-<meta name="description" content="Markhor Signals: indicator-based CALL / PUT suggestions for forex, metals, stocks and crypto with an honest live backtest.">
+<title>MeHbOOb AhMaD 🔥 – CALL / PUT Signals</title>
+<meta name="description" content="MeHbOOb AhMaD: indicator-based CALL / PUT suggestions for forex, metals, stocks and crypto with an honest live backtest.">
 <style>
 :root{--bg:#0a0e17;--bg2:#101726;--card:rgba(255,255,255,.04);--bd:rgba(255,255,255,.09);--tx:#eef2f9;--mu:#8d99ae;--up:#2ee59d;--dn:#ff5c6c;--ac:#f5b942;--sel:#141c2e}
 @media(prefers-color-scheme:light){:root{--bg:#f3f5fa;--bg2:#e6ebf6;--card:rgba(255,255,255,.85);--bd:rgba(20,30,60,.1);--tx:#101828;--mu:#5b6677;--up:#07935a;--dn:#d6283b;--ac:#b27a0a;--sel:#fff}}
@@ -14,8 +14,6 @@ body{margin:0;min-height:100vh;color:var(--tx);font:16px/1.55 system-ui,-apple-s
  background:radial-gradient(900px 500px at 15% -10%,rgba(245,185,66,.14),transparent 60%),radial-gradient(800px 500px at 100% 0,rgba(46,229,157,.10),transparent 55%),linear-gradient(var(--bg),var(--bg2))}
 .w{max-width:860px;margin:0 auto;padding:22px 16px 40px}
 .brand{display:flex;align-items:center;gap:14px;margin:6px 0 22px}
-.logo{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#f5b942,#e0742b);box-shadow:0 8px 24px rgba(245,185,66,.35)}
-.logo svg{width:28px;height:28px}
 .brand h1{margin:0;font-size:28px;letter-spacing:.3px;line-height:1.1}
 .brand h1 span{color:var(--ac)}
 .brand p{margin:2px 0 0;color:var(--mu);font-size:13.5px}
@@ -70,6 +68,13 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 #q:focus{border-color:var(--ac)}
 #srow{grid-column:1/-1;display:none}
 .me{display:block;width:104px;height:104px;margin:0 auto 12px;border-radius:50%;object-fit:cover;border:3px solid var(--ac);box-shadow:0 10px 28px rgba(245,185,66,.28)}
+.modes{display:flex;gap:8px;flex-wrap:wrap}
+.mode{flex:1 1 130px;padding:10px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--sel);color:var(--tx);font:600 13.5px system-ui,sans-serif;cursor:pointer;text-align:center}
+.mode small{display:block;font-weight:400;font-size:11px;color:var(--mu);margin-top:2px}
+.mode.on{border-color:var(--ac);background:rgba(245,185,66,.14);color:var(--ac)}
+.mode.on small{color:var(--ac)}
+#mrow{grid-column:1/-1}
+.big.long{font-size:clamp(24px,7.4vw,40px);line-height:1.25}
 .ft{text-align:center;margin-top:26px;font-size:14.5px;color:var(--mu)}
 .ft b{color:var(--tx)}
 .wa{display:inline-flex;align-items:center;gap:9px;margin-top:12px;padding:10px 20px 10px 12px;border-radius:99px;background:#25d366;color:#fff;font-weight:700;text-decoration:none;box-shadow:0 8px 22px rgba(37,211,102,.3);transition:transform .15s}
@@ -82,11 +87,8 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 <div class="w">
 
 <div class="brand">
-  <div class="logo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6l8 9 8-9v13"/></svg>
-  </div>
   <div>
-    <h1>Markhor <span>Signals</span></h1>
+    <h1>MeHbOOb <span>AhMaD 🔥</span></h1>
     <p>Smart CALL / PUT signals for forex, metals, stocks and crypto, backed by an honest backtest.</p>
     <span class="chip">Signals for Quotex traders</span>
   </div>
@@ -98,7 +100,7 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
   <div id="srow"><label>Search any company</label><input id="q" placeholder="Type a company name or ticker, e.g. Tesla or NVDA" autocomplete="off"></div>
   <div><label>Candle</label><select id="tf"><option value="1min">1 minute</option><option value="5min" selected>5 minutes</option><option value="15min">15 minutes</option></select></div>
   <div><label>Expiry (candles)</label><select id="ex"><option>1</option><option selected>3</option><option>5</option><option>10</option></select></div>
-  <div><label>Strictness</label><select id="st"><option value="30">Strict (5 of 7 checks)</option><option value="35" selected>Balanced (4 of 7)</option><option value="40">Relaxed (3 of 7)</option></select></div>
+  <div id="mrow"><label>Signal mode</label><div class="modes" id="modes"></div><input type="hidden" id="st" value="35"></div>
 </div></div>
 
 <div class="warn" id="warn"></div>
@@ -143,12 +145,12 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 </div>
 
 <div class="card disc">
-  <b>Important.</b> Markhor Signals is an educational technical-analysis tool, not financial advice. Signals combine several indicators and a news check to filter weak setups, but they are not guarantees, and no strategy wins reliably on short expiries. Most people who trade binary options lose money, and binary options are restricted or banned for retail traders in many countries (including the EU, UK and Australia). Check your local rules and never risk money you can’t afford to lose. This site is not affiliated with Quotex or any broker. Prices come from a third-party data provider and can differ from your broker’s, and broker-specific OTC pairs are not covered. Metals and stocks depend on your data plan (free plans mainly cover US stocks), and each market has opening hours.
+  <b>Important.</b> This site is an educational technical-analysis tool, not financial advice. Signals combine several indicators and a news check to filter weak setups, but they are not guarantees, and no strategy wins reliably on short expiries. Most people who trade binary options lose money, and binary options are restricted or banned for retail traders in many countries (including the EU, UK and Australia). Check your local rules and never risk money you can’t afford to lose. This site is not affiliated with Quotex or any broker. Prices come from a third-party data provider and can differ from your broker’s, and broker-specific OTC pairs are not covered. Metals and stocks depend on your data plan (free plans mainly cover US stocks), and each market has opening hours.
 </div>
 
 <div class="ft">
   <img class="me" src="images/creator.jpg" alt="Site creator" width="104" height="104" loading="lazy">
-  Created By <b>Mehboob Ahmad</b><br>
+  Created By <b>MeHbOOb AhMaD 🇵🇰</b>
   <div class="soc">
     <a class="wa" href="https://wa.me/923016955911" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 24 24"><path d="M12 1a11 11 0 0 0-9.4 16.7L1 23l5.4-1.6A11 11 0 1 0 12 1z" fill="#fff"/><path transform="translate(5.6 5.6) scale(.5)" fill="#25d366" d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
@@ -163,12 +165,18 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 <script src="engine.js"></script>
 <script>
 const $=id=>document.getElementById(id);
-const PAYOUT=0.85,TF={'1min':60,'5min':300,'15min':900},MIN={30:5,35:4,40:3};
+const PAYOUT=0.85,TF={'1min':60,'5min':300,'15min':900},MIN={30:5,35:4,40:3,45:3,50:3};
 const PAIRS=['EUR/USD','GBP/USD','USD/JPY','USD/CHF','AUD/USD','USD/CAD','NZD/USD','EUR/GBP','EUR/JPY','EUR/CHF','EUR/AUD','EUR/CAD','EUR/NZD','GBP/JPY','GBP/CHF','GBP/AUD','GBP/CAD','GBP/NZD','AUD/JPY','AUD/CAD','AUD/CHF','AUD/NZD','CAD/JPY','CAD/CHF','CHF/JPY','NZD/JPY','NZD/CAD','NZD/CHF','BTC/USD','ETH/USD'];
 const LIST={fx:PAIRS.map(p=>[p,p]),
  mt:[['XAU/USD','Gold (XAU/USD)'],['XAG/USD','Silver (XAG/USD)'],['XPT/USD','Platinum (XPT/USD)'],['XPD/USD','Palladium (XPD/USD)']],
  cr:['BTC','ETH','SOL','XRP','BNB','ADA','DOGE','LTC'].map(c=>[c+'/USD',c+'/USD']),
  st:[['AAPL','Apple (AAPL)'],['MSFT','Microsoft (MSFT)'],['GOOGL','Alphabet (GOOGL)'],['AMZN','Amazon (AMZN)'],['NVDA','NVIDIA (NVDA)'],['META','Meta (META)'],['TSLA','Tesla (TSLA)'],['NFLX','Netflix (NFLX)'],['AMD','AMD (AMD)'],['INTC','Intel (INTC)'],['JPM','JPMorgan (JPM)'],['V','Visa (V)'],['MA','Mastercard (MA)'],['WMT','Walmart (WMT)'],['DIS','Disney (DIS)'],['KO','Coca-Cola (KO)'],['PEP','PepsiCo (PEP)'],['NKE','Nike (NKE)'],['BA','Boeing (BA)'],['XOM','ExxonMobil (XOM)']]};
+const MODES=[[50,'Fast Signals','Most signals'],[45,'Active Signals','Many signals'],[40,'Relaxed Signals','More signals'],[35,'Balanced Signals','Balanced'],[30,'Pro Mode Signals','Fewest, strongest']];
+function drawModes(){const box=$('modes');box.innerHTML='';
+ MODES.forEach(([v,n,sub])=>{const b=document.createElement('button');b.type='button';b.className='mode'+(+$('st').value===v?' on':'');
+  b.textContent=n;const sm=document.createElement('small');sm.textContent=sub;b.appendChild(sm);
+  b.onclick=()=>{$('st').value=v;drawModes();load()};box.appendChild(b)})}
+drawModes();
 function fill(){const m=$('mk').value;$('sym').innerHTML=LIST[m].map(([v,l])=>`<option value="${v}">${l}</option>`).join('');$('srow').style.display=m==='st'?'block':'none'}
 fill();
 let nextClose=0,timer=null,retryT=null;
@@ -180,7 +188,7 @@ const isFx=s=>s.includes('/')&&!isCrypto(s)&&!isMetal(s);
 const cur=s=>isFx(s)?s.split('/'):['USD'];
 
 function setCard(s,title,badge,why,sc,wait,none){
- $('sg').textContent=title;$('sg').className='big '+(s===1?'CALL':s===-1?'PUT':'WAIT');
+ $('sg').textContent=title;$('sg').className='big '+(s===1?'CALL':s===-1?'PUT':'WAIT')+(title.length>8?' long':'');
  $('sc').dataset.s=s===1?'call':s===-1?'put':'none';$('sb').textContent=badge;
  $('ic').innerHTML=s===1?ARW+'<path d="M12 20V5M5 11l7-7 7 7"/></svg>':s===-1?ARW+'<path d="M12 4v15M5 13l7 7 7-7"/></svg>':DASH;
  $('dots').innerHTML=s?Array.from({length:7},(_,k)=>`<i class="${k<sc?'on':''}"></i>`).join(''):'';
@@ -229,7 +237,7 @@ function renderNews(sym,ev){const box=$('nw');box.innerHTML='';
 
 async function load(){
  clearTimeout(retryT);
- const sym=$('sym').value,tf=$('tf').value,ex=+$('ex').value,lowR=+$('st').value,P={rsi:lowR,min:MIN[lowR],step:TF[tf]*1000};
+ const sym=$('sym').value,tf=$('tf').value,ex=+$('ex').value,lowR=+$('st').value,P={rsi:lowR,min:MIN[lowR],step:TF[tf]*1000};if(lowR===45)Object.assign(P,{adx:15,rk:0.2,major:false});if(lowR===50)Object.assign(P,{rsi:50,min:tf==='1min'?2:3,adx:15,rk:0.2,major:false});
  let cs;
  try{
   const r=await fetch(`/.netlify/functions/candles?symbol=${encodeURIComponent(sym)}&interval=${tf}`);
@@ -240,7 +248,7 @@ async function load(){
  }catch(e){showDown(e.message);return}
  let ev=null;try{const r=await fetch('/.netlify/functions/news'),d=await r.json();if(d.ok)ev=d.events}catch(e){}
  renderNews(sym,ev);
- $('warn').style.display='none';
+ const fast=lowR===50;$('warn').style.display=fast?'block':'none';if(fast)$('warn').textContent='Fast mode gives many signals, but they are lower quality. Use a demo account only, and check the backtest below.';
  const x=calc(cs),i=x.c.length-1,res=evalAt(x,i,P);
  let s=res.s,why=res.why,block=res.block;
  const hot=ev&&hotEvent(sym,ev,ex*TF[tf]/60);
@@ -250,7 +258,7 @@ async function load(){
  $('pr').textContent=sym.split('@')[0]+' · '+$('tf').selectedOptions[0].text;
  $('ct').textContent=sym.split('@')[0]+' · '+$('tf').selectedOptions[0].text;$('cc').style.display='block';last={x,s};draw(x,s);
  if(s)setCard(s,s===1?'UP':'DOWN',(s===1?'CALL':'PUT')+' · SETUP STRENGTH '+res.sc+'/7',why,res.sc);
- else setCard(0,hot?'NEWS WINDOW':'NO SIGNAL','PAUSED',[block||'Waiting for a high-quality setup'],0);
+ else setCard(0,hot?'NEWS WINDOW':'WAITING FOR DIRECTION','PAUSED',[block||'Waiting for a high-quality setup'],0);
  $('vr').textContent=x.r[i].toFixed(1);
  $('vt').textContent=x.e60[i]>x.e150[i]?'Up ▲':'Down ▼';
  $('vb').textContent=x.c[i]<x.lo[i]?'Below lower':x.c[i]>x.hi[i]?'Above upper':'Inside bands';
@@ -259,7 +267,7 @@ async function load(){
  $('bw').textContent=b.n?`${(wr*100).toFixed(1)}% (${(lo*100).toFixed(0)}–${(hi*100).toFixed(0)}%)`:'–';
  $('bb').textContent=(be*100).toFixed(1)+'%';
  $('be').textContent=b.n?(b.pnl/b.n>=0?'+':'')+(b.pnl/b.n).toFixed(3):'–';
- $('vd').textContent=b.n<30?'Too few trades to conclude anything. Try Relaxed strictness or a longer expiry.':
+ $('vd').textContent=b.n<30?'Too few trades to conclude anything. Try a looser signal mode or a longer expiry.':
   lo>be?'Rules beat break-even on this sample. This is in-sample history only, so it is not proof of a future edge.':
   'No proven edge: the win-rate range includes or falls below break-even. Treat signals as unreliable.';
  startTimer();
