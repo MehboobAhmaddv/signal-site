@@ -23,16 +23,44 @@ function candle(x,i,d){const o=x.o[i],c=x.c[i],h=x.h[i],l=x.l[i],po=x.o[i-1],pc=
  if(d===1){if(c>o&&pc<po&&c>=po&&o<=pc)return'Bullish engulfing candle';if(lw>=2*b&&lw>=.6*rg)return'Hammer candle (rejection of lows)'}
  else{if(c<o&&pc>po&&c<=po&&o>=pc)return'Bearish engulfing candle';if(uw>=2*b&&uw>=.6*rg)return'Shooting-star candle (rejection of highs)'}
  return''}
+/* ---- rate-based modes: score every candle, signal when the score is high enough to hit a target rate ---- */
+function dirScore(x,i,d){const why=[];let sc=0;
+ if(d*(x.e20[i]-x.e50[i])>0){sc+=1.5;why.push('Short-term trend '+(d===1?'up':'down'))}
+ if(d*(x.e60[i]-x.e150[i])>0){sc+=1.5;why.push('Major trend '+(d===1?'up':'down'))}
+ const r=d===1?(50-x.r[i])/20:(x.r[i]-50)/20;if(r>0){const v=Math.min(1.5,r);sc+=v;if(v>=0.5)why.push('RSI '+x.r[i].toFixed(0)+(d===1?' (low)':' (high)'))}
+ if(x.hi[i]!=null&&x.hi[i]>x.lo[i]){const pb=(x.c[i]-x.lo[i])/(x.hi[i]-x.lo[i]),b=d===1?(0.3-pb)/0.3:(pb-0.7)/0.3;
+  if(b>0){const v=Math.min(1.5,b);sc+=v;if(v>=0.5)why.push('Price near '+(d===1?'lower':'upper')+' Bollinger Band')}}
+ const k=x.k[i],kp=x.k[i-1],sv=d===1?(30-k)/30:(k-70)/30;
+ if(sv>0&&(d===1?k>kp:k<kp)){sc+=0.5*Math.min(1,sv);why.push('Stochastic turning '+(d===1?'up':'down'))}
+ if(d*(x.mh[i]-x.mh[i-1])>0){sc+=0.5;why.push('MACD momentum '+(d===1?'up':'down'))}
+ const cd=candle(x,i,d);if(cd){sc+=0.7;why.push(cd)}
+ return{sc,why}}
+function bestAt(x,i){const u=dirScore(x,i,1),w=dirScore(x,i,-1);
+ const up=u.sc===w.sc?x.e20[i]>=x.e50[i]:u.sc>w.sc;return up?{s:1,...u}:{s:-1,...w}}
+function scoreOf(x,j){x._s=x._s||{};const v=x._s[j];return v!==undefined?v:(x._s[j]=bestAt(x,j).sc)}
+function evalRank(x,i,P){
+ if(i<220)return{s:0,sc:0,why:[],block:'Not enough history'};
+ const b=bestAt(x,i);
+ if(P.rate>=1)return{s:b.s,sc:b.sc,why:b.why.length?b.why:['No strong confirmation (low-confidence signal)'],block:''};
+ const lo=Math.max(220,i-800);if(i-lo<150)return{s:0,sc:0,why:[],block:'Collecting history'};
+ const a=[];for(let j=lo;j<i;j++)a.push(scoreOf(x,j));a.sort((p,q)=>p-q);
+ const th=a[Math.min(a.length-1,Math.floor((1-P.rate)*a.length))];
+ return b.sc>=th&&b.sc>0?{s:b.s,sc:b.sc,why:b.why,block:''}:{s:0,sc:b.sc,why:[],block:'Waiting for a stronger setup'}}
 /* P = {rsi: 30|35|40, min: required score out of 7}. Returns {s:+1|-1|0, sc, why[], block} */
 function evalAt(x,i,P){
+ if(P.both){const a=evalAt(x,i,{rsi:P.rsi,min:P.min,adx:P.adx,rk:P.rk,major:P.major});
+  if(!a.s)return a;const b=evalRank(x,i,{rate:P.rate});
+  return b.s===a.s?{...a,sc:Math.max(a.sc,b.sc)}:{s:0,sc:a.sc,why:[],block:'Waiting for a stronger setup'}}
+ if(P.rate!==undefined)return evalRank(x,i,P);
  if(i<220)return{s:0,sc:0,why:[],block:'Not enough history'};
  const win=x.w.slice(i-200,i+1),rk=win.filter(v=>v<=x.w[i]).length/win.length;
- if(rk<0.3)return{s:0,sc:0,why:[],block:'Market too quiet'};
- if(x.adx[i]<18)return{s:0,sc:0,why:[],block:'Trend too weak (ADX low)'};
+ if(rk<(P.rk||0.3))return{s:0,sc:0,why:[],block:'Market too quiet'};
+ if(x.adx[i]<(P.adx||18))return{s:0,sc:0,why:[],block:'Trend too weak (ADX low)'};
  let best={s:0,sc:0,why:[],block:'Waiting for a high-quality setup'};
  for(const d of[1,-1]){
-  if(!(d*(x.e20[i]-x.e50[i])>0&&d*(x.e60[i]-x.e150[i])>0))continue;
-  const why=['Short and major trends agree '+(d===1?'(up)':'(down)')];let sc=2;
+  const maj=P.major!==false;
+  if(!(d*(x.e20[i]-x.e50[i])>0&&(!maj||d*(x.e60[i]-x.e150[i])>0)))continue;
+  const why=[(maj?'Short and major trends agree ':'Short-term trend ')+(d===1?'(up)':'(down)')];let sc=maj?2:1;
   const ext=d===1?x.r[i]<P.rsi:x.r[i]>100-P.rsi,band=d===1?x.c[i]<=x.lo[i]:x.c[i]>=x.hi[i];
   if(!(ext||band))continue;
   if(ext){sc++;why.push('RSI '+x.r[i].toFixed(0)+(d===1?' (oversold)':' (overbought)'))}
@@ -46,6 +74,6 @@ function wilson(w,n,z=1.96){if(!n)return[0,0];const p=w/n,d=1+z*z/n,c=(p+z*z/(2*
 function backtest(x,ex,P,payout=0.85){let w=0,l=0,pnl=0,i=220;
  while(i<x.c.length-ex){const r=evalAt(x,i,P);
   if(r.s&&P.step&&x.t&&x.t[i+ex]-x.t[i]>ex*P.step*1.6){i++;continue}
-  if(r.s){const d=(x.c[i+ex]-x.c[i])*r.s;if(d>0){w++;pnl+=payout}else if(d<0){l++;pnl-=1}i+=ex}else i++}
+  if(r.s){const d=(x.c[i+ex]-x.c[i])*r.s;if(d>0){w++;pnl+=payout}else if(d<0){l++;pnl-=1}i+=P.rate!==undefined?1:ex}else i++}
  return{w,n:w+l,pnl}}
 if(typeof module!=='undefined')module.exports={calc,evalAt,backtest,wilson};
