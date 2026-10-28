@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#060a12">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
 <title>MeHbOOb AhMaD 🔥 – CALL / PUT Signals</title>
 <meta name="description" content="MeHbOOb AhMaD: indicator-based CALL / PUT suggestions for forex, metals, stocks and crypto with a live chart, news filter and an honest live backtest.">
 <style>
@@ -116,7 +119,33 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 .wa:hover{transform:translateY(-3px) scale(1.03)}
 .wa svg{width:26px;height:26px}
 .tg{background:#229ed9;box-shadow:0 10px 26px rgba(34,158,217,.32)}
-@media(max-width:480px){.grid{gap:8px}.m b{font-size:16px}.card{padding:16px;border-radius:18px}}
+.navr{display:flex;align-items:center;gap:8px}
+.nb{padding:6px 12px;border-radius:99px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:600 12.5px "Inter","Segoe UI",system-ui,sans-serif;cursor:pointer;white-space:nowrap;align-items:center;transition:border-color .2s,transform .2s}
+.nb:hover{border-color:var(--ac);transform:translateY(-1px)}
+.star{background:none;border:0;color:var(--ac);font-size:18px;line-height:1;cursor:pointer;padding:0 2px;vertical-align:middle}
+.tgl{grid-column:1/-1;display:flex;gap:8px 20px;flex-wrap:wrap}
+.sw{display:flex;align-items:center;gap:8px;margin:0;font-size:13.5px;text-transform:none;letter-spacing:0;font-weight:500;color:var(--tx);cursor:pointer}
+.sw input{width:18px;height:18px;accent-color:var(--ac)}
+.btn{padding:11px 20px;border-radius:13px;border:0;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#1a1204;font:700 14px "Inter","Segoe UI",system-ui,sans-serif;cursor:pointer;transition:transform .2s,box-shadow .2s,opacity .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px -8px var(--ac)}.btn:disabled{opacity:.5;cursor:default;transform:none}
+.btn.ghost{background:var(--sel);color:var(--tx);border:1px solid var(--bd)}
+.btns{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+.pbar{height:6px;border-radius:4px;background:var(--bd);margin:14px 0 4px;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .4s}
+.pt{font-size:12px;color:var(--mu);min-height:18px}
+.sr,.tr{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--bd);font-size:14px}
+.sr{cursor:pointer;transition:background .2s}.sr:hover{background:var(--card)}.sr:last-child,.tr:last-child{border:0}
+.bdg{font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:99px;border:1px solid var(--bd);color:var(--mu);white-space:nowrap}
+.bdg.u{color:var(--up);border-color:var(--up);background:color-mix(in srgb,var(--up) 12%,transparent)}.bdg.d{color:var(--dn);border-color:var(--dn);background:color-mix(in srgb,var(--dn) 12%,transparent)}
+.sres{max-height:340px;overflow:auto;margin-top:8px}
+.fld{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:12px 0}
+.fld input{width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--bd);background:var(--sel);color:var(--tx);font-size:15px;outline:none}
+.fld input:focus{border-color:var(--ac)}
+.sub2{font-size:12px;color:var(--mu);margin:14px 0 4px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.em{background:#ea4335;box-shadow:0 10px 26px rgba(234,67,53,.32)}
+.why{text-align:start}.why li{padding:5px 0;padding-inline-start:24px}.why li:before{left:auto;inset-inline-start:0}
+.live{margin-inline-start:auto;margin-left:0}.gauge{direction:ltr}
+.navi{flex-wrap:wrap;row-gap:8px}.brand{min-width:0}.navr{flex-shrink:0}
+@media(max-width:480px){.stat #clk{display:none}.stat{padding:8px}.nb{padding:6px 10px}.brand h1{font-size:clamp(15px,4.8vw,19px)}.grid{gap:8px}.m b{font-size:16px}.card{padding:16px;border-radius:18px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -125,24 +154,25 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 
 <header class="nav"><div class="navi">
   <div class="brand"><h1>MeHbOOb <span>AhMaD 🔥</span></h1></div>
-  <div class="stat"><b class="dot"></b><span id="clk">--:--:-- UTC</span></div>
+  <div class="navr"><button class="nb" id="inst" style="display:none" data-t>Install app</button><button class="nb" id="lang">اردو</button><div class="stat"><b class="dot"></b><span id="clk">--:--:-- UTC</span></div></div>
 </div></header>
 
 <main class="w">
 <section class="hero rise" style="--i:0">
-  <p class="eyebrow">LIVE MARKET SIGNALS</p>
-  <h2>Sharper CALL / PUT signals for forex, metals, stocks and crypto</h2>
-  <p class="lead">Real candles, a live chart, a news filter and an honest backtest, all in one place.</p>
-  <span class="chip">Signals for Quotex traders</span>
+  <p class="eyebrow" data-t>LIVE MARKET SIGNALS</p>
+  <h2 data-t>Sharper CALL / PUT signals for forex, metals, stocks and crypto</h2>
+  <p class="lead" data-t>Real candles, a live chart, a news filter and an honest backtest, all in one place.</p>
+  <span class="chip" data-t>Signals for Quotex traders</span>
 </section>
 
 <div class="card rise" style="--i:1"><div class="row">
-  <div><label>Market</label><select id="mk"><option value="fx">Forex</option><option value="mt">Metals</option><option value="cr">Crypto</option><option value="st">Stocks</option></select></div>
-  <div><label>Symbol</label><select id="sym"></select></div>
-  <div id="srow"><label>Search any company</label><input id="q" placeholder="Type a company name or ticker, e.g. Tesla or NVDA" autocomplete="off"></div>
-  <div><label>Candle</label><select id="tf"><option value="1min">1 minute</option><option value="5min" selected>5 minutes</option><option value="15min">15 minutes</option></select></div>
-  <div><label>Expiry (candles)</label><select id="ex"><option>1</option><option selected>3</option><option>5</option><option>10</option></select></div>
-  <div id="mrow"><label>Signal mode</label><div class="modes" id="modes"></div><input type="hidden" id="st" value="40"></div>
+  <div><label data-t>Market</label><select id="mk"><option value="fx" data-t>Forex</option><option value="mt" data-t>Metals</option><option value="cr" data-t>Crypto</option><option value="st" data-t>Stocks</option><option value="fav" data-t>★ Favorites</option></select></div>
+  <div><label><span data-t>Symbol</span> <button type="button" id="fav" class="star" title="Favourite">☆</button></label><select id="sym"></select></div>
+  <div id="srow"><label data-t>Search any company</label><input id="q" placeholder="Type a company name or ticker, e.g. Tesla or NVDA" autocomplete="off"></div>
+  <div><label data-t>Candle</label><select id="tf"><option value="1min" data-t>1 minute</option><option value="5min" selected data-t>5 minutes</option><option value="15min" data-t>15 minutes</option></select></div>
+  <div><label data-t>Expiry (candles)</label><select id="ex"><option>1</option><option selected>3</option><option>5</option><option>10</option></select></div>
+  <div id="mrow"><label data-t>Signal mode</label><div class="modes" id="modes"></div><input type="hidden" id="st" value="40"></div>
+  <div class="tgl"><label class="sw"><input type="checkbox" id="snd"><span data-t>Sound alerts</span></label><label class="sw"><input type="checkbox" id="ntf"><span data-t>Notifications</span></label><label class="sw"><input type="checkbox" id="tfc"><span data-t>Confirm with higher timeframe</span></label></div>
 </div></div>
 
 <div class="warn" id="warn"></div>
@@ -152,20 +182,21 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
   <div class="pair" id="pr">–</div>
   <div class="big WAIT" id="sg">…</div>
   <div class="sb" id="sb"></div>
+  <div class="warn" id="rk" style="margin:12px 0 0"></div>
   <div class="dots" id="dots"></div>
   <ul class="why" id="why"></ul>
   <div class="cdbox">
     <div class="ringbox">
       <svg viewBox="0 0 120 120"><defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5b942"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs>
         <circle class="rt" cx="60" cy="60" r="52"/><circle class="rp" id="cbar" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
-      <div class="rc"><div class="cdn" id="cdn">--:--</div><div class="cdl2">next candle</div></div>
+      <div class="rc"><div class="cdn" id="cdn">--:--</div><div class="cdl2" data-t>next candle</div></div>
     </div>
     <div class="cdl" id="cd">Loading data…</div>
   </div>
   <div class="grid">
     <div class="m"><b id="vr">–</b><span>RSI (14)</span></div>
-    <div class="m"><b id="vt">–</b><span>Trend</span></div>
-    <div class="m"><b id="vb">–</b><span>Bollinger</span></div>
+    <div class="m"><b id="vt">–</b><span data-t>Trend</span></div>
+    <div class="m"><b id="vb">–</b><span data-t>Bollinger</span></div>
   </div>
 </div>
 
@@ -176,41 +207,71 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 </div>
 
 <div class="card rise" style="--i:4">
-  <div class="h"><i></i>News check</div>
+  <div class="h"><i></i><span data-t>Scanner</span></div>
+  <p class="sub">Scans every symbol in the selected market and lists the ones with a signal right now. Tap a row to open it.</p>
+  <div class="row"><div><label data-t>Speed</label><select id="sspd"><option value="6" data-t>Free plan (6/min)</option><option value="30" data-t>Paid plan (30/min)</option></select></div>
+  <div class="btns"><button class="btn" id="sgo" data-t>Scan now</button><button class="btn ghost" id="sstop" data-t>Stop</button></div></div>
+  <div class="pbar"><i id="spg"></i></div><div class="pt" id="sprog"></div>
+  <div class="sres" id="sres"></div>
+</div>
+
+<div class="card rise" style="--i:4">
+  <div class="h"><i></i><span data-t>News check</span></div>
   <p class="sub">High and medium impact events for this pair’s currencies. Signals pause around high-impact news.</p>
   <div class="nw" id="nw">Loading…</div>
 </div>
 
 <div class="card rise" style="--i:5">
-  <div class="h"><i></i>Backtest on recent history</div>
+  <div class="h"><i></i><span data-t>Backtest on recent history</span></div>
   <p class="sub">The same rules applied to the last ~1000 candles (news is not replayed). Wins are counted at an 85% payout; ties are refunded. Setup strength counts how many checks agree; it is not a probability of winning.</p>
   <div class="bt">
-    <div class="m"><b id="bn">–</b><span>Trades</span></div>
-    <div class="m"><b id="bw">–</b><span>Win rate (95% range)</span></div>
-    <div class="m"><b id="bb">–</b><span>Break-even win rate</span></div>
-    <div class="m"><b id="be">–</b><span>Avg result per $1</span></div>
+    <div class="m"><b id="bn">–</b><span data-t>Trades</span></div>
+    <div class="m"><b id="bw">–</b><span data-t>Win rate (95% range)</span></div>
+    <div class="m"><b id="bb">–</b><span data-t>Break-even win rate</span></div>
+    <div class="m"><b id="be">–</b><span data-t>Avg result per $1</span></div>
   </div>
   <div class="gauge"><i id="gw"></i><u id="gk"></u></div>
   <div class="gl"><span>0%</span><span>Red line = break-even</span><span>100%</span></div>
   <div class="verdict" id="vd"></div>
 </div>
 
-<div class="card disc rise" style="--i:6"><b>Important.</b> This site is an educational technical-analysis tool, not financial advice. Signals combine several indicators and a news check to filter weak setups, but they are not guarantees, and no strategy wins reliably on short expiries. Most people who trade binary options lose money, and binary options are restricted or banned for retail traders in many countries (including the EU, UK and Australia). Check your local rules and never risk money you can’t afford to lose. This site is not affiliated with Quotex or any broker. Prices come from a third-party data provider and can differ from your broker’s, and broker-specific OTC pairs are not covered. Metals and stocks depend on your data plan (free plans mainly cover US stocks), and each market has opening hours.</div>
+<div class="card rise" style="--i:6">
+  <div class="h"><i></i><span data-t>Track record</span></div>
+  <p class="sub">Every signal this site shows on this device is saved and settled automatically after its expiry. Stats are for this device only.</p>
+  <div class="bt"><div class="m"><b id="tk1">0</b><span data-t>Signals tracked</span></div><div class="m"><b id="tk2">0</b><span data-t>Settled</span></div><div class="m"><b id="tk3">–</b><span data-t>Win rate</span></div></div>
+  <div class="verdict" id="tkv"></div>
+  <div class="tm" id="tkm" style="margin-top:12px"></div>
+  <div class="sub2" data-t>Recent signals</div><div id="tkr"></div>
+  <div class="btns" style="margin-top:14px"><button class="btn ghost" id="hex" data-t>Export CSV</button><button class="btn ghost" id="hclr" data-t>Clear history</button></div>
+</div>
+
+<div class="card rise" style="--i:6">
+  <div class="h"><i></i><span data-t>Risk tools</span></div>
+  <div class="fld">
+    <div><label data-t>Balance</label><input id="rb" type="number" min="0" step="any"></div>
+    <div><label data-t>Risk per trade %</label><input id="rr" type="number" min="0" step="any"></div>
+    <div><label data-t>Payout %</label><input id="rp" type="number" min="1" step="any"></div>
+    <div><label data-t>Daily loss limit %</label><input id="rl" type="number" min="0" step="any"></div>
+    <div><label data-t>Max losses in a row</label><input id="rm" type="number" min="1" step="1"></div>
+  </div>
+  <div class="bt"><div class="m"><b id="rs1">–</b><span data-t>Suggested stake</span></div><div class="m"><b id="rs2">–</b><span data-t>If you win</span></div><div class="m"><b id="rs3">–</b><span data-t>If you lose</span></div>
+  <div class="m"><b id="rs4">–</b><span data-t>Tracked today (if traded)</span></div><div class="m"><b id="rs5">0</b><span data-t>Loss streak</span></div></div>
+</div>
+
+<div class="card disc rise" id="discl" style="--i:7"><b>Important.</b> This site is an educational technical-analysis tool, not financial advice. Signals combine several indicators and a news check to filter weak setups, but they are not guarantees, and no strategy wins reliably on short expiries. Most people who trade binary options lose money, and binary options are restricted or banned for retail traders in many countries (including the EU, UK and Australia). Check your local rules and never risk money you can’t afford to lose. This site is not affiliated with Quotex or any broker. Prices come from a third-party data provider and can differ from your broker’s, and broker-specific OTC pairs are not covered. Metals and stocks depend on your data plan (free plans mainly cover US stocks), and each market has opening hours.</div>
 
 <footer class="ft rise" style="--i:7">
   <div class="mering"><img class="me" src="images/creator.jpg" alt="Site creator" width="112" height="112" loading="lazy"></div>
-  Created By <b>MeHbOOb AhMaD 🇵🇰</b>
+  <span data-t>Created By</span> <b>MeHbOOb AhMaD 🇵🇰</b>
   <div class="soc">
-    <a class="wa" href="https://wa.me/923016955911" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-    <svg viewBox="0 0 24 24"><path d="M12 1a11 11 0 0 0-9.4 16.7L1 23l5.4-1.6A11 11 0 1 0 12 1z" fill="#fff"/><path transform="translate(5.6 5.6) scale(.5)" fill="#25d366" d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-    WhatsApp
-  </a>
-    <a class="wa tg" href="https://t.me/Markhorpro" target="_blank" rel="noopener" aria-label="Chat on Telegram"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#fff"/><path fill="#229ed9" d="M5.4 11.9 17.6 7.2c.6-.2 1.1.1.9.8l-2 9.2c-.1.6-.5.8-1 .5l-2.9-2.1-1.4 1.4c-.2.2-.3.3-.6.3l.2-3 5.4-4.9c.2-.2-.1-.3-.3-.1l-6.7 4.2-2.9-.9c-.6-.2-.6-.6.1-.9z"/></svg>Telegram</a>
+    <a class="wa em" href="mailto:mehboobgaxar@gmail.com" aria-label="Send an email"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#fff"/><rect x="6" y="8" width="12" height="8.5" rx="1.4" fill="none" stroke="#ea4335" stroke-width="1.7"/><path d="M6.4 8.8 12 13l5.6-4.2" fill="none" stroke="#ea4335" stroke-width="1.7" stroke-linejoin="round"/></svg><span data-t>Email</span></a>
+    <a class="wa tg" href="https://t.me/Markhorpro" target="_blank" rel="noopener" aria-label="Chat on Telegram"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#fff"/><path fill="#229ed9" d="M5.4 11.9 17.6 7.2c.6-.2 1.1.1.9.8l-2 9.2c-.1.6-.5.8-1 .5l-2.9-2.1-1.4 1.4c-.2.2-.3.3-.6.3l.2-3 5.4-4.9c.2-.2-.1-.3-.3-.1l-6.7 4.2-2.9-.9c-.6-.2-.6-.6.1-.9z"/></svg><span data-t>Telegram</span></a>
   </div>
 </footer>
 </main>
 
 <script src="engine.js"></script>
+<script src="features.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const PAYOUT=0.85,TF={'1min':60,'5min':300,'15min':900},MIN={30:5,35:4,40:3,45:3,50:3};
@@ -222,10 +283,10 @@ const LIST={fx:PAIRS.map(p=>[p,p]),
 const MODES=[[50,'Fast Mode','Every candle, no break'],[45,'Active Mode','3+ signals per 15 min'],[40,'Relaxed Mode','3–4 signals per hour'],[30,'Premium Mode','5–10 signals per day'],[35,'Ultra Premium Mode','Rarest, strictest setups']];
 function drawModes(){const box=$('modes');box.innerHTML='';
  MODES.forEach(([v,n,sub])=>{const b=document.createElement('button');b.type='button';b.className='mode'+(+$('st').value===v?' on':'');
-  b.textContent=n;const sm=document.createElement('small');sm.textContent=sub;b.appendChild(sm);
+  b.textContent=t(n);const sm=document.createElement('small');sm.textContent=t(sub);b.appendChild(sm);
   b.onclick=()=>{$('st').value=v;drawModes();load()};box.appendChild(b)})}
 drawModes();
-function fill(){const m=$('mk').value;$('sym').innerHTML=LIST[m].map(([v,l])=>`<option value="${v}">${l}</option>`).join('');$('srow').style.display=m==='st'?'block':'none'}
+function fill(){LIST.fav=favs().filter(v=>VALID.test(v)).map(v=>[v,v.split('@')[0]]);if(!LIST.fav.length)LIST.fav=[['EUR/USD','EUR/USD']];const m=$('mk').value;$('sym').innerHTML=LIST[m].map(([v,l])=>`<option value="${v}">${l}</option>`).join('');$('srow').style.display=m==='st'?'block':'none';updFav()}
 fill();
 let nextClose=0,timer=null,retryT=null;
 const ARW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">';
@@ -296,7 +357,7 @@ async function load(quiet){const q=quiet===true;if(busy){if(!q)again=true;return
  busy=true;try{await loadInner(q)}finally{busy=false;if(again){again=false;load()}}}
 async function loadInner(q){
  clearTimeout(retryT);
- const sym=$('sym').value,tf=$('tf').value,ex=+$('ex').value,mode=+$('st').value,P=modeParams(mode,tf);step=TF[tf]*1000;
+ const sym=$('sym').value,tf=$('tf').value,ex=+$('ex').value,mode=+$('st').value,P=modeParams(mode,tf);step=TF[tf]*1000;savePrefs();
  let cs;
  try{
   const r=await fetch(`/.netlify/functions/candles?symbol=${encodeURIComponent(sym)}&interval=${tf}`);
@@ -305,7 +366,7 @@ async function loadInner(q){
  }catch(e){if(!q)showDown(e.message);return}
  const lc=cs[cs.length-1];
  if(Date.now()-lc.t>step*3){showClosed();return}
- const forming=lc.t+step>Date.now(),closed=forming?cs.slice(0,-1):cs;
+ const forming=lc.t+step>Date.now(),closed=forming?cs.slice(0,-1):cs;resolveHist(sym,tf,closed);
  if(!q||Date.now()-newsAt>300000){try{const r=await fetch('/.netlify/functions/news'),d=await r.json();evCache=d.ok?d.events:null}catch(e){evCache=null}newsAt=Date.now()}
  const ev=evCache;renderNews(sym,ev);
  const note=MODE_NOTE[mode]||'';$('warn').style.display=note?'block':'none';$('warn').textContent=note;
@@ -315,13 +376,16 @@ async function loadInner(q){
  const hr=new Date((Math.floor(Date.now()/step)+1)*step).getUTCHours();
  if(hot){s=0;why=[];block='High-impact news: '+hot.c+' '+hot.n}
  else if(mode!==50&&isFx(sym)&&hr>=21&&hr<23){s=0;why=[];block='Low-liquidity rollover hour'}
+ if(s&&$('tfc').checked){const hd=await htfTrend(sym,tf);if(hd&&hd!==s){s=0;why=[];block='Against the '+HTL[tf]+' trend'}else if(hd===s)why=why.concat('Higher timeframe ('+HTL[tf]+') agrees')}
  const lab=sym.split('@')[0]+' · '+$('tf').selectedOptions[0].text;
  $('pr').textContent=lab;$('ct').textContent=lab;$('cc').style.display='block';
  const xd=forming?calc(cs):x;last={x:xd,s,mk:i};draw(xd,s,i);
  const dec=lc.c>1000?2:lc.c>50?3:5;$('lp').textContent=lc.c.toFixed(dec);$('lp').style.color=lc.c>=lc.o?'var(--up)':'var(--dn)';
  const str=Math.min(7,Math.max(1,Math.round(res.sc)));
- if(s)setCard(s,s===1?'UP':'DOWN',(s===1?'CALL':'PUT')+' · SETUP STRENGTH '+str+'/7',why,str);
- else setCard(0,hot?'NEWS WINDOW':'WAIT FOR DIRECTION','PAUSED',[block||'Waiting for a high-quality setup'],0);
+ if(s){setCard(s,t(s===1?'UP':'DOWN'),t(s===1?'CALL':'PUT')+' · '+t('SETUP STRENGTH')+' '+str+'/7',why,str);
+  const lcl=closed[closed.length-1];if(recordSignal({sym,tf,mode,ex,s,str,t:lcl.t,entry:lcl.c})&&q)alertSignal(s,sym,lab)}
+ else setCard(0,t(hot?'NEWS WINDOW':'WAIT FOR DIRECTION'),t('PAUSED'),[block||'Waiting for a high-quality setup'],0);
+ renderRisk();
  $('vr').textContent=x.r[i].toFixed(1);
  $('vt').textContent=x.e60[i]>x.e150[i]?'Up ▲':'Down ▼';
  $('vb').textContent=x.c[i]<x.lo[i]?'Below lower':x.c[i]>x.hi[i]?'Above upper':'Inside bands';
@@ -343,10 +407,10 @@ function tick(){if(!live)return;
  const n=Date.now(),nb=(Math.floor(n/step)+1)*step,left=nb-n,sec=Math.ceil(left/1000);
  $('cdn').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
  $('cbar').style.strokeDashoffset=(326.7*left/step).toFixed(1);
- $('cd').textContent='Next candle at '+new Date(nb).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' · enter the trade when it opens';
+ $('cd').textContent=t('Next candle at')+' '+new Date(nb).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' · '+t('enter the trade when it opens');
  const bar=Math.floor(n/step);
  if(bar!==curBar){curBar=bar;lastPoll=n;setTimeout(()=>load(true),3000)}
- else if(n-lastPoll>15000){lastPoll=n;load(true)}}
+ else if(n-lastPoll>15000&&!scanning){lastPoll=n;load(true)}}
 ['sym','tf','ex','st'].forEach(id=>$(id).addEventListener('change',load));
 $('mk').addEventListener('change',()=>{fill();load()});
 let qt=null;
@@ -360,6 +424,7 @@ $('q').addEventListener('input',()=>{clearTimeout(qt);const v=$('q').value.trim(
   load();
  }catch(e){}},450)});
 const clock=()=>{$('clk').textContent=new Date().toISOString().slice(11,19)+' UTC'};clock();setInterval(clock,1000);
+initFeatures();
 load();
 </script>
 </body>

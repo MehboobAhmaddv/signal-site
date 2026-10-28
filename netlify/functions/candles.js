@@ -1,4 +1,4 @@
-const INTERVALS = ['1min', '5min', '15min'];
+const INTERVALS = ['1min', '5min', '15min', '1h'];
 const cache = {}; // short in-memory cache so many visitors share one data request
 
 exports.handler = async (e) => {
