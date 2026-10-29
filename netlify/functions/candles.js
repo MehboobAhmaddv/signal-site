@@ -1,17 +1,21 @@
+const A = require('../lib/auth');
 const INTERVALS = ['1min', '5min', '15min', '1h'];
 const cache = {}; // short in-memory cache so many visitors share one data request
 
 exports.handler = async (e) => {
+  const a = await A.authed(e);
+  if (!a) return A.json(401, { error: 'Please log in again' });
   const q = e.queryStringParameters || {};
   // forex/metals/crypto: AAA/BBB   stocks: AAPL or AAPL@NASDAQ
   if (!/^[A-Z0-9.\-]{1,12}(\/[A-Z]{3,4}|@[A-Za-z0-9]{2,12})?$/.test(q.symbol || '') || !INTERVALS.includes(q.interval)) {
     return { statusCode: 400, body: '{"error":"Bad symbol or interval"}' };
   }
+  if (!A.canUse(a.user, q.symbol)) return A.json(403, { error: 'Members only: upgrade to unlock this pair' });
   if (!process.env.TD_KEY) return { statusCode: 500, body: '{"error":"TD_KEY is not set on the server"}' };
 
   const key = q.symbol + q.interval;
   const hit = cache[key];
-  const headers = { 'content-type': 'application/json', 'cache-control': 'public, max-age=20' };
+  const headers = { 'content-type': 'application/json', 'cache-control': 'private, max-age=15' };
   if (hit && Date.now() - hit.t < 20000) return { statusCode: 200, headers, body: hit.body };
 
   try {

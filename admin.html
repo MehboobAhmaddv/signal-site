@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#060a12">
+<title>Admin · MeHbOOb AhMaD 🔥</title>
+<link rel="stylesheet" href="theme.css">
+<script>if(!localStorage.getItem('ms_tok'))location.replace('login.html?next=admin.html')</script>
+<style>.act{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.act input{width:70px;padding:6px 8px;border-radius:9px;font-size:13px}.tbl td small{color:var(--mu)}</style>
+</head>
+<body>
+<div class="bg"><span></span><span></span></div>
+<header class="nav"><div class="navi">
+  <a class="bl" href="index.html"><span class="avw"><img class="av" src="images/creator.jpg" alt="" width="42" height="42"></span><span class="bn">Admin <span>panel</span></span></a>
+  <div class="navr"><a class="nb" href="index.html">← Dashboard</a><button class="nb" id="out" type="button">Log out</button></div>
+</div></header>
+<main class="w">
+  <div class="card rise"><p class="eyebrow">Overview</p>
+    <div class="grid" style="margin-top:12px"><div class="m"><b id="s1">–</b><span>Users</span></div><div class="m"><b id="s2">–</b><span>Active members</span></div><div class="m"><b id="s3">–</b><span>Revenue (USDT)</span></div><div class="m"><b id="s4">–</b><span>Orders to review</span></div><div class="m"><b id="s5">–</b><span>Blocked</span></div></div>
+    <div class="msg" id="gm"></div></div>
+
+  <div class="card rise" style="--i:1"><p class="eyebrow">Orders waiting for you</p><div class="scr"><table class="tbl"><thead><tr><th>Date</th><th>User</th><th>Plan</th><th>Amount</th><th>TXID</th><th></th></tr></thead><tbody id="ro"></tbody></table></div></div>
+
+  <div class="card rise" style="--i:2"><p class="eyebrow">Users</p>
+    <div class="row" style="margin:12px 0"><input id="q" placeholder="Search name or email" style="max-width:320px"><button class="btn ghost sm" id="rf" type="button">Refresh</button></div>
+    <div class="scr"><table class="tbl"><thead><tr><th>User</th><th>Status</th><th>Until</th><th>Actions</th></tr></thead><tbody id="us"></tbody></table></div></div>
+
+  <div class="card rise" style="--i:3"><p class="eyebrow">Recent orders</p><div class="scr"><table class="tbl"><thead><tr><th>Date</th><th>User</th><th>Plan</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead><tbody id="al"></tbody></table></div></div>
+</main>
+<script src="app-auth.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+$('out').onclick=()=>logout();
+const say=(t,ok)=>{$('gm').className='msg '+(ok?'ok':'err');$('gm').textContent=t};
+async function call(body){const r=await post('admin',body);if(!r.ok){say(r.data.error,false);if(r.status===403)setTimeout(()=>location.href='index.html',1200)}return r}
+function cell(tr,txt,sub){const td=h('td','',txt);if(sub){td.appendChild(document.createElement('br'));td.appendChild(h('small','',sub))}tr.appendChild(td);return td}
+function btn(label,cls,fn){const b=h('button','btn sm '+cls,label);b.onclick=async()=>{b.disabled=true;await fn();b.disabled=false};return b}
+async function stats(){const r=await call({action:'stats'});if(!r.ok)return;const d=r.data;$('s1').textContent=d.users;$('s2').textContent=d.members;$('s3').textContent=d.revenue.toFixed(2);$('s4').textContent=d.review;$('s5').textContent=d.banned}
+async function users(){const r=await call({action:'users',q:$('q').value});if(!r.ok)return;const tb=$('us');tb.innerHTML='';
+ r.data.users.forEach(u=>{const tr=h('tr');cell(tr,u.name,u.email);const st=h('td');st.appendChild(h('span','bdg '+(u.banned?'d':u.admin?'a':u.member?'u':''),u.banned?'Blocked':u.admin?'Admin':u.member?'Member':'Free'));tr.appendChild(st);
+  cell(tr,u.member&&!u.admin?fmtDate(u.until):'–');const a=h('td'),w=h('div','act'),d=h('input');d.type='number';d.value=30;d.min=1;w.appendChild(d);
+  if(!u.admin){w.appendChild(btn('Add days','',async()=>{const x=await call({action:'grant',email:u.email,days:d.value});if(x.ok){say('Added '+d.value+' days to '+u.email,true);users();stats()}}));
+   w.appendChild(btn('Revoke','ghost',async()=>{const x=await call({action:'revoke',email:u.email});if(x.ok){say('Membership removed',true);users();stats()}}));
+   w.appendChild(btn(u.banned?'Unblock':'Block','ghost',async()=>{const x=await call({action:'ban',email:u.email,banned:!u.banned});if(x.ok){users();stats()}}));
+   w.appendChild(btn('Reset password','ghost',async()=>{const p=prompt('New password for '+u.email+' (8+ characters):');if(!p)return;const x=await call({action:'resetpw',email:u.email,password:p});if(x.ok)say('Password changed. Send it to the user privately.',true)}));
+   w.appendChild(btn('Delete','red',async()=>{if(!confirm('Delete '+u.email+' permanently?'))return;const x=await call({action:'delete',email:u.email});if(x.ok){say('User deleted',true);users();stats()}}))}
+  a.appendChild(w);tr.appendChild(a);tb.appendChild(tr)})}
+async function orders(){const r=await call({action:'orders'});if(!r.ok)return;const ro=$('ro'),al=$('al');ro.innerHTML='';al.innerHTML='';
+ const rev=r.data.orders.filter(o=>o.status==='REVIEW');
+ if(!rev.length){const tr=h('tr'),td=h('td','sub','Nothing waiting.');td.colSpan=6;tr.appendChild(td);ro.appendChild(tr)}
+ rev.forEach(o=>{const tr=h('tr');cell(tr,fmtDate(o.created));cell(tr,o.email);cell(tr,o.days+' days');cell(tr,'$'+o.amount);const t=cell(tr,o.txid||'');t.className='code';
+  const a=h('td'),w=h('div','act');w.appendChild(btn('Approve','',async()=>{const x=await call({action:'approve',orderId:o.id});if(x.ok){say('Approved. Days added.',true);orders();users();stats()}}));
+  w.appendChild(btn('Reject','red',async()=>{const x=await call({action:'reject',orderId:o.id});if(x.ok){orders();stats()}}));a.appendChild(w);tr.appendChild(a);ro.appendChild(tr)});
+ r.data.orders.slice(0,30).forEach(o=>{const tr=h('tr');cell(tr,fmtDate(o.created));cell(tr,o.email);cell(tr,o.days+' days');cell(tr,'$'+o.amount);cell(tr,o.method==='auto'?'Binance Pay':'Manual');const t=h('td');t.appendChild(h('span','bdg '+(o.status==='PAID'?'u':['REVIEW','PENDING','AWAITING_PAYMENT'].includes(o.status)?'a':'d'),o.status));tr.appendChild(t);al.appendChild(tr)})}
+let qt;$('q').addEventListener('input',()=>{clearTimeout(qt);qt=setTimeout(users,350)});$('rf').onclick=()=>{stats();users();orders()};
+(async()=>{const me=await refreshMe();if(!me||!me.admin){location.replace('index.html');return}stats();users();orders()})();
+</script>
+</body>
+</html>

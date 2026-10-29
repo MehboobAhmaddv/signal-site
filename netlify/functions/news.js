@@ -1,8 +1,10 @@
 // Free public economic-calendar feed (unofficial, may change). Fails safe: returns ok:false.
+const A = require('../lib/auth');
 let cache = { t: 0, body: null };
 
-exports.handler = async () => {
-  const h = { 'content-type': 'application/json', 'cache-control': 'public, max-age=600' };
+exports.handler = async (event) => {
+  if (!(await A.authed(event))) return A.json(401, { error: 'Please log in again' });
+  const h = { 'content-type': 'application/json', 'cache-control': 'private, max-age=300' };
   if (cache.body && Date.now() - cache.t < 30 * 60000) return { statusCode: 200, headers: h, body: cache.body };
   try {
     const r = await fetch('https://nfs.faireconomy.media/ff_calendar_thisweek.json');

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#060a12">
+<title>Log in · MeHbOOb AhMaD 🔥</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+.wrap{max-width:440px;margin:0 auto;padding:36px 16px 56px}
+.hd{text-align:center;margin-bottom:18px}
+.hd .avw{width:84px;height:84px;margin:0 auto 12px;display:block}
+.tabs{display:flex;gap:6px;background:var(--sel);border:1px solid var(--bd);border-radius:14px;padding:5px;margin-bottom:18px}
+.tabs button{flex:1;padding:10px;border:0;border-radius:10px;background:none;color:var(--mu);font:700 14px "Inter","Segoe UI",system-ui,sans-serif;cursor:pointer;transition:background .2s,color .2s}
+.tabs button.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#1a1204}
+.pw{position:relative}.pw button{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--mu);cursor:pointer;font-size:13px;font-weight:600}
+.perks{font-size:13px;color:var(--mu);margin:14px 0 0;padding:0;list-style:none}.perks li{padding:3px 0 3px 22px;position:relative}.perks li:before{content:"✓";position:absolute;left:0;color:var(--up);font-weight:800}
+</style>
+</head>
+<body>
+<div class="bg"><span></span><span></span></div>
+<main class="wrap">
+  <div class="hd rise">
+    <a class="avw" href="index.html"><img class="av" src="images/creator.jpg" alt="" width="84" height="84"></a>
+    <p class="eyebrow">MeHbOOb AhMaD 🔥</p>
+    <h2 id="ttl">Welcome back</h2>
+    <p class="sub" id="sb">Log in to open your live signals dashboard.</p>
+  </div>
+  <div class="card rise" style="--i:1">
+    <div class="tabs"><button id="tl" class="on" type="button">Log in</button><button id="tr" type="button">Create account</button></div>
+    <div class="f hide" id="fn"><label for="nm">Your name</label><input id="nm" autocomplete="name" maxlength="40"></div>
+    <div class="f"><label for="em">Email</label><input id="em" type="email" autocomplete="email" inputmode="email"></div>
+    <div class="f pw"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password"><button type="button" id="eye">Show</button></div>
+    <button class="btn" id="go" style="width:100%">Log in</button>
+    <div class="msg" id="msg"></div>
+    <ul class="perks hide" id="perks"><li>Free account: BTC/USD and EUR/USD live signals</li><li>Membership: every pair, scanner, company search, alerts</li><li>Pay with Binance (USDT). No card needed</li></ul>
+  </div>
+  <p class="sub" style="text-align:center">Forgot your password? Ask the site owner to reset it: <a href="mailto:mehboobgaxar@gmail.com" style="color:var(--ac)">Email</a> · <a href="https://t.me/Markhorpro" style="color:var(--ac)">Telegram</a></p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+if(localStorage.getItem('ms_tok'))location.replace('index.html');
+let mode='login';
+const nextPage=(()=>{const n=new URLSearchParams(location.search).get('next');return ['index.html','membership.html','admin.html'].includes(n)?n:'index.html'})();
+function setMode(m){mode=m;$('tl').classList.toggle('on',m==='login');$('tr').classList.toggle('on',m==='register');
+ $('fn').classList.toggle('hide',m==='login');$('perks').classList.toggle('hide',m==='login');
+ $('go').textContent=m==='login'?'Log in':'Create account';$('ttl').textContent=m==='login'?'Welcome back':'Create your account';
+ $('sb').textContent=m==='login'?'Log in to open your live signals dashboard.':'Takes 20 seconds. No card needed.';
+ $('pw').autocomplete=m==='login'?'current-password':'new-password';$('msg').textContent='';$('msg').className='msg'}
+$('tl').onclick=()=>setMode('login');$('tr').onclick=()=>setMode('register');
+if(new URLSearchParams(location.search).get('mode')==='register')setMode('register');
+$('eye').onclick=()=>{const s=$('pw').type==='password';$('pw').type=s?'text':'password';$('eye').textContent=s?'Hide':'Show'};
+async function submit(){
+ const msg=$('msg');msg.className='msg';msg.textContent='';$('go').disabled=true;
+ try{
+  const body={action:mode,email:$('em').value.trim(),password:$('pw').value};if(mode==='register')body.name=$('nm').value;
+  const r=await fetch('/.netlify/functions/auth',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});
+  let d={};try{d=await r.json()}catch(e){throw new Error('Login server not found. Deploy with Netlify Git so functions run.')}
+  if(!r.ok)throw new Error(d.error||'Something went wrong');
+  localStorage.setItem('ms_tok',d.token);localStorage.setItem('ms_user',JSON.stringify(d.user));
+  msg.className='msg ok';msg.textContent='Done. Opening your dashboard…';location.href=nextPage;
+ }catch(e){msg.className='msg err';msg.textContent=e.message;$('go').disabled=false}
+}
+$('go').onclick=submit;['em','pw','nm'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')submit()}));
+</script>
+</body>
+</html>

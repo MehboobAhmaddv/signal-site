@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#060a12">
+<title>Membership · MeHbOOb AhMaD 🔥</title>
+<link rel="stylesheet" href="theme.css">
+<script>if(!localStorage.getItem('ms_tok'))location.replace('login.html?next=membership.html')</script>
+</head>
+<body>
+<div class="bg"><span></span><span></span></div>
+<header class="nav"><div class="navi">
+  <a class="bl" href="index.html"><span class="avw"><img class="av" src="images/creator.jpg" alt="" width="42" height="42"></span><span class="bn">MeHbOOb <span>AhMaD 🔥</span></span></a>
+  <div class="navr"><a class="nb" href="index.html">← Dashboard</a><button class="nb" id="out" type="button">Log out</button></div>
+</div></header>
+<main class="w">
+  <section class="rise"><p class="eyebrow">Membership</p><h2>Unlock every pair and tool</h2><p class="sub">Pay once with Binance (USDT). Your days are added the moment payment is confirmed.</p></section>
+
+  <div class="card rise" style="--i:1"><div class="grid">
+    <div class="m"><b id="st">–</b><span>Your plan</span></div>
+    <div class="m"><b id="un">–</b><span>Valid until</span></div>
+    <div class="m"><b id="dl">–</b><span>Days left</span></div>
+  </div></div>
+
+  <div class="card rise" style="--i:2">
+    <p class="eyebrow">Choose a plan</p>
+    <div class="plans" id="plans" style="margin-top:12px"></div>
+    <div class="msg" id="pm"></div>
+  </div>
+
+  <div class="card hide" id="pay"></div>
+
+  <div class="card rise" style="--i:3">
+    <p class="eyebrow">What members get</p>
+    <ul class="sub" style="margin:10px 0 0;padding-inline-start:18px;line-height:1.9">
+      <li>All forex, metals, crypto and stock pairs (free accounts: BTC/USD and EUR/USD)</li>
+      <li>Multi-pair scanner and company search</li>
+      <li>Telegram alerts channel and sound alerts</li>
+      <li>Track record, risk tools and CSV export</li>
+    </ul>
+    <p class="sub" style="margin-top:10px">Signals are educational, not financial advice. Memberships are not refundable once activated.</p>
+  </div>
+
+  <div class="card rise" style="--i:4"><p class="eyebrow">Your orders</p><div class="scr"><table class="tbl"><thead><tr><th>Date</th><th>Plan</th><th>Amount</th><th>Method</th><th>Status</th><th></th></tr></thead><tbody id="ord"></tbody></table></div><div class="msg" id="om"></div></div>
+</main>
+<script src="app-auth.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+let INFO=null,timer=null;
+const STAT={PAID:['✓ Paid','u'],PENDING:['Waiting for payment','a'],AWAITING_PAYMENT:['Send payment','a'],REVIEW:['Under review','a'],EXPIRED:['Expired','d'],CANCELED:['Cancelled','d'],ERROR:['Error','d'],REJECTED:['Rejected','d']};
+$('out').onclick=()=>logout();
+function showUser(u){$('st').textContent=u.admin?'Admin':u.member?'Member':'Free';$('un').textContent=u.member&&!u.admin?fmtDate(u.until):'–';$('dl').textContent=u.member&&!u.admin?daysLeft(u.until):'–'}
+async function load(){
+ const r=await post('pay',{action:'plans'});if(!r.ok){$('pm').className='msg err';$('pm').textContent=r.data.error;return}
+ INFO=r.data;setUser(INFO.user);showUser(INFO.user);
+ const box=$('plans');box.innerHTML='';
+ INFO.plans.forEach((p,i)=>{const c=h('div','plan'+(p.id==='90'?' best':''));
+  c.appendChild(h('small','',p.days+' days'));c.appendChild(h('div','pr','$'+p.price));c.appendChild(h('small','','USDT · $'+(p.price/p.days).toFixed(2)+' per day'));
+  if(p.id==='90')c.appendChild(h('div','bdg a','Most popular'));
+  const b=h('button','btn','Choose');b.style.cssText='width:100%;margin-top:14px';b.onclick=()=>choose(p);c.appendChild(b);box.appendChild(c)});
+ await orders();
+ const o=new URLSearchParams(location.search).get('order');if(o){await checkOrder(o,true)}
+}
+function choose(p){
+ const m=$('pm');m.className='msg';m.textContent='';
+ const box=$('pay');box.classList.remove('hide');box.innerHTML='';
+ box.appendChild(h('p','eyebrow','Pay for '+p.days+' days · $'+p.price+' USDT'));
+ const row=h('div','row');row.style.marginTop='12px';
+ if(INFO.auto){const b=h('button','btn','Pay with Binance Pay');b.onclick=()=>create(p,'auto',b);row.appendChild(b)}
+ if(INFO.manual){const b=h('button','btn ghost','Send USDT manually');b.onclick=()=>create(p,'manual',b);row.appendChild(b)}
+ if(!INFO.auto&&!INFO.manual)box.appendChild(h('p','sub','Payments are not set up yet. Please contact the site owner.'));
+ box.appendChild(row);box.appendChild(h('div','msg')).id='cm';box.scrollIntoView({behavior:'smooth',block:'center'})
+}
+async function create(p,method,btn){
+ btn.disabled=true;const r=await post('pay',{action:'create',plan:p.id,method});btn.disabled=false;
+ if(!r.ok){$('cm').className='msg err';$('cm').textContent=r.data.error;return}
+ await orders();r.data.order.method==='auto'?autoFlow(r.data.order):manualFlow(r.data.order,r.data.manual)
+}
+function autoFlow(o){
+ const box=$('pay');box.innerHTML='';box.appendChild(h('p','eyebrow','Complete your payment on Binance'));
+ box.appendChild(h('p','sub','A Binance Pay window opens in a new tab. Pay '+o.amount+' USDT, then come back here. This page confirms it automatically.'));
+ const row=h('div','row'),a=h('a','btn','Open Binance Pay');a.href=o.checkoutUrl;a.target='_blank';a.rel='noopener';
+ const c=h('button','btn ghost','I have paid, check now');c.onclick=()=>checkOrder(o.id);row.appendChild(a);row.appendChild(c);box.appendChild(row);
+ const m=h('div','msg');m.id='cm';box.appendChild(m);window.open(o.checkoutUrl,'_blank','noopener');
+ clearInterval(timer);let n=0;timer=setInterval(async()=>{if(++n>100){clearInterval(timer);return}await checkOrder(o.id,true)},6000)
+}
+function manualFlow(o,mn){
+ const box=$('pay');box.innerHTML='';box.appendChild(h('p','eyebrow','Send '+o.amount+' USDT'));
+ const g=h('div','');g.style.cssText='display:grid;gap:10px;margin:12px 0';
+ const add=(l,v)=>{if(!v)return;const d=h('div','');d.appendChild(h('label','',l));const c=h('div','code',v);c.style.cursor='pointer';c.title='Tap to copy';c.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(v);c.dataset.c=1;c.textContent=v+'  ✓ copied'};d.appendChild(c);g.appendChild(d)};
+ add('Amount (USDT)',String(o.amount));add('Binance Pay ID',mn&&mn.payId);add('USDT address ('+(mn&&mn.network)+')',mn&&mn.address);add('Reference (put this in the note)',o.id);
+ if(mn&&mn.qr){const q=h('img');q.src=mn.qr;q.alt='USDT deposit QR code';q.width=170;q.height=170;q.style.cssText='display:block;margin:4px auto;border-radius:12px;background:#fff;padding:6px';g.insertBefore(q,g.firstChild)}
+ box.appendChild(g);box.appendChild(h('p','sub','After sending, paste the transaction ID (TXID) or the Binance Pay order number below. The owner checks it and activates your days, usually within a few hours.'));
+ const f=h('div','f'),i=h('input');i.id='tx';i.placeholder='Transaction ID or order number';f.appendChild(i);box.appendChild(f);
+ const b=h('button','btn','Submit for review');b.onclick=async()=>{b.disabled=true;const r=await post('pay',{action:'txid',orderId:o.id,txid:i.value});b.disabled=false;const m=$('cm');m.className='msg '+(r.ok?'ok':'err');m.textContent=r.ok?'Submitted. We will activate your membership after checking it.':r.data.error;if(r.ok)orders()};
+ box.appendChild(b);const m=h('div','msg');m.id='cm';box.appendChild(m)
+}
+async function checkOrder(id,quiet){
+ const r=await post('pay',{action:'check',orderId:id});if(!r.ok){if(!quiet&&$('cm')){$('cm').className='msg err';$('cm').textContent=r.data.error}return}
+ setUser(r.data.user);showUser(r.data.user);
+ if(r.data.order.status==='PAID'){clearInterval(timer);const box=$('pay');box.classList.remove('hide');box.innerHTML='';box.appendChild(h('p','eyebrow','✓ Payment confirmed'));box.appendChild(h('p','sub','Your membership is active until '+fmtDate(r.data.user.until)+'.'));const a=h('a','btn','Open dashboard');a.href='index.html';box.appendChild(a);await orders()}
+ else if(!quiet&&$('cm')){$('cm').className='msg';$('cm').textContent='Not paid yet ('+(r.data.order.bstatus||r.data.order.status)+'). Try again in a minute.'}
+}
+async function orders(){
+ const r=await post('pay',{action:'mine'});const tb=$('ord');tb.innerHTML='';if(!r.ok)return;
+ if(!r.data.orders.length){const tr=h('tr'),td=h('td','sub','No orders yet.');td.colSpan=6;tr.appendChild(td);tb.appendChild(tr)}
+ r.data.orders.forEach(o=>{const tr=h('tr'),s=STAT[o.status]||[o.status,''];
+  tr.appendChild(h('td','',fmtDate(o.created)));tr.appendChild(h('td','',o.days+' days'));tr.appendChild(h('td','','$'+o.amount));tr.appendChild(h('td','',o.method==='auto'?'Binance Pay':'Manual'));
+  const t=h('td');t.appendChild(h('span','bdg '+s[1],s[0]));tr.appendChild(t);
+  const a=h('td');if(o.status==='PENDING'){const b=h('button','btn ghost sm','Check');b.onclick=()=>checkOrder(o.id);a.appendChild(b)}
+  else if(o.status==='AWAITING_PAYMENT'){const b=h('button','btn ghost sm','Continue');b.onclick=()=>manualFlow(o,INFO&&INFO.manual)||$('pay').classList.remove('hide');b.onclick=()=>{$('pay').classList.remove('hide');manualFlow(o,INFO.manual)};a.appendChild(b)}
+  tr.appendChild(a);tb.appendChild(tr)})
+}
+load();
+</script>
+</body>
+</html>

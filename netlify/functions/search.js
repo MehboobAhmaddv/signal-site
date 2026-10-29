@@ -1,9 +1,13 @@
 // Company / ticker search so visitors can find any listed stock or ETF.
+const A = require('../lib/auth');
 const cache = {};
 
 exports.handler = async (e) => {
+  const a = await A.authed(e);
+  if (!a) return A.json(401, { error: 'Please log in again' });
+  if (!A.isMember(a.user)) return A.json(403, { error: 'Members only: company search is for members' });
   const q = String((e.queryStringParameters || {}).q || '').trim().slice(0, 40);
-  const h = { 'content-type': 'application/json', 'cache-control': 'public, max-age=3600' };
+  const h = { 'content-type': 'application/json', 'cache-control': 'private, max-age=3600' };
   if (q.length < 2) return { statusCode: 200, headers: h, body: '[]' };
   if (!process.env.TD_KEY) return { statusCode: 500, body: '{"error":"TD_KEY is not set on the server"}' };
   const k = q.toLowerCase();

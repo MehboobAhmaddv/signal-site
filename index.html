@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#060a12">
+<script>if(!localStorage.getItem("ms_tok"))location.replace("login.html")</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
@@ -145,6 +146,29 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 .why{text-align:start}.why li{padding:5px 0;padding-inline-start:24px}.why li:before{left:auto;inset-inline-start:0}
 .live{margin-inline-start:auto;margin-left:0}.gauge{direction:ltr}
 .navi{flex-wrap:wrap;row-gap:8px}.brand{min-width:0}.navr{flex-shrink:0}
+
+/* ---- premium polish ---- */
+html{scrollbar-width:thin;scrollbar-color:var(--ac) transparent}
+::selection{background:var(--ac);color:#111}
+.card{--fill:color-mix(in srgb,var(--card2) 90%,transparent);--bd1:color-mix(in srgb,var(--ac) 55%,transparent);--bd2:color-mix(in srgb,#3b82f6 45%,transparent);border:1px solid transparent;
+ background:linear-gradient(var(--fill),var(--fill)) padding-box,linear-gradient(135deg,var(--bd1),transparent 38%,transparent 62%,var(--bd2)) border-box}
+.sig[data-s=call]{--bd1:var(--up);--bd2:var(--up)}.sig[data-s=put]{--bd1:var(--dn);--bd2:var(--dn)}
+.navi{max-width:980px}.w{max-width:980px}
+.bl{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--tx);min-width:0}
+.avw{width:42px;height:42px;border-radius:50%;padding:2px;flex:none;background:conic-gradient(var(--ac),var(--ac2),#3b82f6,var(--up),var(--ac));animation:spin 8s linear infinite}
+.av{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;border:2px solid var(--bg);animation:spin 8s linear infinite reverse}
+.bn{margin:0;font-weight:800;font-size:clamp(15px,4.4vw,19px);letter-spacing:.3px;white-space:nowrap;line-height:1.1}
+.bn span{background:linear-gradient(90deg,var(--ac),var(--ac2),var(--ac));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite}
+.chip2{font-size:11.5px;font-weight:800;padding:5px 11px;border-radius:99px;border:1px solid var(--bd);color:var(--mu);letter-spacing:.6px}.chip2.m{color:var(--up);border-color:var(--up)}.chip2.a{color:var(--ac);border-color:var(--ac)}
+.acc{position:relative}.menu{position:absolute;inset-inline-end:0;top:calc(100% + 10px);min-width:210px;background:var(--card2);border:1px solid var(--bd);border-radius:16px;box-shadow:var(--sh);padding:8px;display:none;z-index:40}
+.menu.on{display:block}.menu a,.menu button{display:block;width:100%;text-align:start;padding:10px 12px;border:0;background:none;color:var(--tx);font:600 14px "Inter","Segoe UI",system-ui,sans-serif;border-radius:10px;cursor:pointer;text-decoration:none}
+.menu a:hover,.menu button:hover{background:var(--card)}.mh{padding:8px 12px;font-size:12px;color:var(--mu);border-bottom:1px solid var(--bd);margin-bottom:6px;word-break:break-all}
+.hero{position:relative}.hero h2{background:linear-gradient(90deg,var(--tx),color-mix(in srgb,var(--tx) 70%,var(--ac)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.pills span{font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:99px;border:1px solid var(--bd);background:var(--card);color:var(--mu);transition:transform .2s,border-color .2s}.pills span:hover{transform:translateY(-2px);border-color:var(--ac);color:var(--tx)}
+.hart{position:absolute;inset-inline-end:0;top:4px;width:min(300px,38%);opacity:.9}.hart path{stroke-dasharray:640;stroke-dashoffset:640;animation:draw 3.6s .4s ease forwards}@keyframes draw{to{stroke-dashoffset:0}}
+.ft{margin-top:34px;padding-top:26px;border-top:1px solid var(--bd)}
+@media(max-width:700px){.stat{display:none}.hart{display:none}}
+@media(max-width:520px){.chip2,#uname{display:none}}
 @media(max-width:480px){.stat #clk{display:none}.stat{padding:8px}.nb{padding:6px 10px}.brand h1{font-size:clamp(15px,4.8vw,19px)}.grid{gap:8px}.m b{font-size:16px}.card{padding:16px;border-radius:18px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
@@ -153,8 +177,14 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 <div class="bg"><span></span><span></span><span></span></div>
 
 <header class="nav"><div class="navi">
-  <div class="brand"><h1>MeHbOOb <span>AhMaD 🔥</span></h1></div>
-  <div class="navr"><button class="nb" id="inst" style="display:none" data-t>Install app</button><button class="nb" id="lang">اردو</button><div class="stat"><b class="dot"></b><span id="clk">--:--:-- UTC</span></div></div>
+  <a class="bl" href="index.html"><span class="avw"><img class="av" src="images/creator.jpg" alt="" width="42" height="42"></span><h1 class="bn">MeHbOOb <span>AhMaD 🔥</span></h1></a>
+  <div class="navr">
+    <button class="nb" id="inst" style="display:none" data-t>Install app</button><button class="nb" id="lang">اردو</button>
+    <span class="chip2" id="plan"></span>
+    <div class="stat"><b class="dot"></b><span id="clk">--:--:-- UTC</span></div>
+    <div class="acc"><button class="nb" id="acc" type="button" aria-haspopup="true">👤 <span id="uname"></span></button>
+      <div class="menu" id="menu"><div class="mh" id="mh"></div><a href="membership.html" data-t>Membership</a><a href="admin.html" id="adm" style="display:none" data-t>Admin panel</a><button id="out" type="button" data-t>Log out</button></div></div>
+  </div>
 </div></header>
 
 <main class="w">
@@ -163,6 +193,8 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
   <h2 data-t>Sharper CALL / PUT signals for forex, metals, stocks and crypto</h2>
   <p class="lead" data-t>Real candles, a live chart, a news filter and an honest backtest, all in one place.</p>
   <span class="chip" data-t>Signals for Quotex traders</span>
+  <div class="pills"><span>⚡ Live candles</span><span>📰 News filter</span><span>📊 Honest backtest</span><span>🏆 Track record</span></div>
+  <svg class="hart" viewBox="0 0 300 120" aria-hidden="true"><defs><linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#f5b942"/><stop offset="1" stop-color="#2ee59d"/></linearGradient></defs><path d="M4 100 L40 80 L70 92 L105 54 L140 66 L178 30 L214 46 L250 14 L296 24" fill="none" stroke="url(#hg)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="296" cy="24" r="5" fill="#2ee59d"/></svg>
 </section>
 
 <div class="card rise" style="--i:1"><div class="row">
@@ -183,6 +215,7 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
   <div class="big WAIT" id="sg">…</div>
   <div class="sb" id="sb"></div>
   <div class="warn" id="rk" style="margin:12px 0 0"></div>
+  <a class="btn" id="upg" href="membership.html" style="display:none;margin:14px auto 0">Upgrade membership</a>
   <div class="dots" id="dots"></div>
   <ul class="why" id="why"></ul>
   <div class="cdbox">
@@ -261,7 +294,6 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 <div class="card disc rise" id="discl" style="--i:7"><b>Important.</b> This site is an educational technical-analysis tool, not financial advice. Signals combine several indicators and a news check to filter weak setups, but they are not guarantees, and no strategy wins reliably on short expiries. Most people who trade binary options lose money, and binary options are restricted or banned for retail traders in many countries (including the EU, UK and Australia). Check your local rules and never risk money you can’t afford to lose. This site is not affiliated with Quotex or any broker. Prices come from a third-party data provider and can differ from your broker’s, and broker-specific OTC pairs are not covered. Metals and stocks depend on your data plan (free plans mainly cover US stocks), and each market has opening hours.</div>
 
 <footer class="ft rise" style="--i:7">
-  <div class="mering"><img class="me" src="images/creator.jpg" alt="Site creator" width="112" height="112" loading="lazy"></div>
   <span data-t>Created By</span> <b>MeHbOOb AhMaD 🇵🇰</b>
   <div class="soc">
     <a class="wa em" href="mailto:mehboobgaxar@gmail.com" aria-label="Send an email"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#fff"/><rect x="6" y="8" width="12" height="8.5" rx="1.4" fill="none" stroke="#ea4335" stroke-width="1.7"/><path d="M6.4 8.8 12 13l5.6-4.2" fill="none" stroke="#ea4335" stroke-width="1.7" stroke-linejoin="round"/></svg><span data-t>Email</span></a>
@@ -271,6 +303,7 @@ canvas#ch{width:100%;height:320px;display:block;margin-top:10px}
 </main>
 
 <script src="engine.js"></script>
+<script src="app-auth.js"></script>
 <script src="features.js"></script>
 <script>
 const $=id=>document.getElementById(id);
@@ -286,7 +319,7 @@ function drawModes(){const box=$('modes');box.innerHTML='';
   b.textContent=t(n);const sm=document.createElement('small');sm.textContent=t(sub);b.appendChild(sm);
   b.onclick=()=>{$('st').value=v;drawModes();load()};box.appendChild(b)})}
 drawModes();
-function fill(){LIST.fav=favs().filter(v=>VALID.test(v)).map(v=>[v,v.split('@')[0]]);if(!LIST.fav.length)LIST.fav=[['EUR/USD','EUR/USD']];const m=$('mk').value;$('sym').innerHTML=LIST[m].map(([v,l])=>`<option value="${v}">${l}</option>`).join('');$('srow').style.display=m==='st'?'block':'none';updFav()}
+function fill(){LIST.fav=favs().filter(v=>VALID.test(v)).map(v=>[v,v.split('@')[0]]);if(!LIST.fav.length)LIST.fav=[['EUR/USD','EUR/USD']];const m=$('mk').value;$('sym').innerHTML=LIST[m].map(([v,l])=>`<option value="${v}">${l}</option>`).join('');$('srow').style.display=m==='st'?'block':'none';updFav();markPairs()}
 fill();
 let nextClose=0,timer=null,retryT=null;
 const ARW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">';
@@ -296,7 +329,7 @@ const isMetal=s=>/^X(AU|AG|PT|PD)\//.test(s);
 const isFx=s=>s.includes('/')&&!isCrypto(s)&&!isMetal(s);
 const cur=s=>isFx(s)?s.split('/'):['USD'];
 
-function setCard(s,title,badge,why,sc,wait,none){
+function setCard(s,title,badge,why,sc,wait,none){$('upg').style.display='none';
  $('sg').textContent=title;$('sg').className='big '+(s===1?'CALL':s===-1?'PUT':'WAIT')+(title.length>8?' long':'');
  $('sc').dataset.s=s===1?'call':s===-1?'put':'none';$('sb').textContent=badge;
  $('ic').innerHTML=s===1?ARW+'<path d="M12 20V5M5 11l7-7 7 7"/></svg>':s===-1?ARW+'<path d="M12 4v15M5 13l7 7 7-7"/></svg>':DASH;
@@ -332,6 +365,7 @@ function showState(title,badge,note,ms,wait){
  $('vd').textContent=note;retryT=setTimeout(load,ms)}
 function showDown(m){const ok=m&&!/error|fetch|JSON|Unexpected|Failed/i.test(m);
  showState('Updating…','WAITING FOR LIVE MARKET DATA',(ok?m+' ':'')+'No signal is shown without live market data. Retrying automatically.',30000,'Retrying in 30 seconds')}
+function showLocked(){showState('MEMBERS ONLY','UPGRADE TO UNLOCK THIS PAIR','Free accounts can use BTC/USD and EUR/USD. Upgrade to unlock every pair, the scanner, company search and Telegram alerts.',600000,'');$('upg').style.display='inline-block'}
 function showClosed(){showState('Market Closed','THIS MARKET IS CLOSED RIGHT NOW','No fresh prices to analyse. Forex and metals close on weekends and stocks trade only during exchange hours. Crypto trades 24/7, so try BTC/USD or ETH/USD.',300000,'Checking again in 5 minutes');$('nw').textContent='Paused while the market is closed.'}
 
 function hotEvent(sym,ev,mins){const c=cur(sym),n=Date.now();
@@ -360,14 +394,14 @@ async function loadInner(q){
  const sym=$('sym').value,tf=$('tf').value,ex=+$('ex').value,mode=+$('st').value,P=modeParams(mode,tf);step=TF[tf]*1000;savePrefs();
  let cs;
  try{
-  const r=await fetch(`/.netlify/functions/candles?symbol=${encodeURIComponent(sym)}&interval=${tf}`);
-  const d=await r.json();if(!r.ok)throw new Error(d.error||'error');
+  const r=await apiFetch(`/.netlify/functions/candles?symbol=${encodeURIComponent(sym)}&interval=${tf}`);
+  const d=await r.json();if(r.status===403){if(!q)showLocked();return}if(!r.ok)throw new Error(d.error||'error');
   cs=d.map(v=>({t:Date.parse(v.datetime.replace(' ','T')+'Z'),o:+v.open,h:+v.high,l:+v.low,c:+v.close}));
  }catch(e){if(!q)showDown(e.message);return}
  const lc=cs[cs.length-1];
  if(Date.now()-lc.t>step*3){showClosed();return}
  const forming=lc.t+step>Date.now(),closed=forming?cs.slice(0,-1):cs;resolveHist(sym,tf,closed);
- if(!q||Date.now()-newsAt>300000){try{const r=await fetch('/.netlify/functions/news'),d=await r.json();evCache=d.ok?d.events:null}catch(e){evCache=null}newsAt=Date.now()}
+ if(!q||Date.now()-newsAt>300000){try{const r=await apiFetch('/.netlify/functions/news'),d=await r.json();evCache=d.ok?d.events:null}catch(e){evCache=null}newsAt=Date.now()}
  const ev=evCache;renderNews(sym,ev);
  const note=MODE_NOTE[mode]||'';$('warn').style.display=note?'block':'none';$('warn').textContent=note;
  const x=calc(closed),i=x.c.length-1,res=evalAt(x,i,P);
@@ -416,7 +450,7 @@ $('mk').addEventListener('change',()=>{fill();load()});
 let qt=null;
 $('q').addEventListener('input',()=>{clearTimeout(qt);const v=$('q').value.trim();if(v.length<2)return;
  qt=setTimeout(async()=>{try{
-  const r=await fetch('/.netlify/functions/search?q='+encodeURIComponent(v)),d=await r.json();if(!r.ok)throw 0;
+  const r=await apiFetch('/.netlify/functions/search?q='+encodeURIComponent(v)),d=await r.json();if(r.status===403){$('sym').innerHTML='<option>🔒 Members only</option>';return}if(!r.ok)throw 0;
   const sel=$('sym');sel.innerHTML='';
   if(!d.length){const o=document.createElement('option');o.textContent='No results';sel.appendChild(o);return}
   d.forEach(x=>{const o=document.createElement('option');o.value=x.s+(x.x?'@'+x.x.replace(/[^A-Za-z0-9]/g,''):'');

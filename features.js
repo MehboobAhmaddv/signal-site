@@ -11,7 +11,7 @@ const UR={'LIVE MARKET SIGNALS':'لائیو مارکیٹ سگنلز','Sharper CA
 'Scanner':'سکینر','Scan now':'ابھی سکین کریں','Stop':'روکیں','Speed':'رفتار','Free plan (6/min)':'فری پلان (6/منٹ)','Paid plan (30/min)':'پیڈ پلان (30/منٹ)','Closed':'بند','error':'خرابی','Done':'مکمل',
 'Track record':'ٹریک ریکارڈ','Signals tracked':'ٹریک شدہ سگنل','Settled':'نتیجہ آ چکا','Win rate':'جیت کی شرح','Export CSV':'CSV ڈاؤن لوڈ','Clear history':'ہسٹری صاف کریں','Recent signals':'حالیہ سگنل','Clear all tracked signals?':'تمام ٹریک شدہ سگنل مٹا دیں؟',
 'Risk tools':'رسک ٹولز','Balance':'بیلنس','Risk per trade %':'فی ٹریڈ رسک %','Payout %':'پے آؤٹ %','Daily loss limit %':'روزانہ نقصان کی حد %','Max losses in a row':'مسلسل زیادہ سے زیادہ ہاریں','Suggested stake':'تجویز کردہ رقم','If you win':'جیتنے پر','If you lose':'ہارنے پر','Tracked today (if traded)':'آج کے سگنل (اگر ٹریڈ ہوتے)','Loss streak':'مسلسل ہاریں',
-'Daily loss limit reached. Stop trading for today.':'روزانہ نقصان کی حد پوری ہو گئی۔ آج مزید ٹریڈ نہ کریں۔','Loss streak limit reached. Take a break before the next trade.':'مسلسل ہاروں کی حد پوری ہو گئی۔ اگلی ٹریڈ سے پہلے وقفہ لیں۔','Install app':'ایپ انسٹال کریں','Created By':'تخلیق کار','Telegram':'ٹیلیگرام','Email':'ای میل'};
+'Daily loss limit reached. Stop trading for today.':'روزانہ نقصان کی حد پوری ہو گئی۔ آج مزید ٹریڈ نہ کریں۔','Loss streak limit reached. Take a break before the next trade.':'مسلسل ہاروں کی حد پوری ہو گئی۔ اگلی ٹریڈ سے پہلے وقفہ لیں۔','Install app':'ایپ انسٹال کریں','Membership':'ممبرشپ','Admin panel':'ایڈمن پینل','Log out':'لاگ آؤٹ','Created By':'تخلیق کار','Telegram':'ٹیلیگرام','Email':'ای میل'};
 const UR_DISC='<b>اہم۔</b> یہ ویب سائٹ صرف تعلیمی تکنیکی تجزیے کا آلہ ہے، مالی مشورہ نہیں۔ سگنلز کوئی ضمانت نہیں، اور مختصر ایکسپائری پر کوئی حکمتِ عملی مستقل جیت نہیں دیتی۔ زیادہ تر لوگ بائنری آپشنز میں پیسے ہار جاتے ہیں، اور کئی ممالک میں یہ محدود یا ممنوع ہیں۔ اپنے ملک کے قوانین دیکھیں اور وہ رقم کبھی نہ لگائیں جو آپ ہارنے کے متحمل نہیں۔ یہ سائٹ Quotex یا کسی بروکر سے منسلک نہیں۔ قیمتیں تیسرے فریق کے ڈیٹا سے آتی ہیں اور آپ کے بروکر سے مختلف ہو سکتی ہیں۔';
 let LANG=LS.get('ms_lang','en');
 const t=s=>(LANG==='ur'&&UR[s])||s;
@@ -46,7 +46,7 @@ function renderTrack(){if(!$('tk1'))return;
  const rc=$('tkr');rc.innerHTML='';
  h.slice(-10).reverse().forEach(e=>{const r=el('div','tr');
   r.appendChild(el('span','',new Date(e.t).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})+' · '+e.sym.split('@')[0]+' '+(e.s===1?'▲':'▼')));
-  r.appendChild(el('span','bdg '+(e.res==='W'?'u':e.res==='L'?'d':'w'),e.res==='W'?'WIN':e.res==='L'?'LOSS':e.res==='T'?'TIE':e.res==='X'?'n/a':'…'));rc.appendChild(r)})}
+  r.appendChild(el('span','bdg '+(e.res==='W'?'u':e.res==='L'?'d':'w'),e.res==='W'?'✓ WIN':e.res==='L'?'✗ LOSS':e.res==='T'?'TIE':e.res==='X'?'n/a':'…'));rc.appendChild(r)});markPairs()}
 function exportCsv(){const rows=[['time_utc','symbol','candle','mode','direction','strength','expiry_candles','entry','exit','result']];
  hist().forEach(e=>rows.push([new Date(e.t).toISOString(),e.sym,e.tf,e.mode,e.s===1?'UP':'DOWN',e.str,e.ex,e.entry,e.exit==null?'':e.exit,e.res||'pending']));
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download='tracked-signals.csv';document.body.appendChild(a);a.click();a.remove()}
@@ -71,6 +71,13 @@ function alertSignal(s,sym,lab){const P=LS.get('ms_pref',{});
  if(P.snd){beep();try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}}
  if(P.ntf&&window.Notification&&Notification.permission==='granted'){try{new Notification((s===1?'UP ▲ ':'DOWN ▼ ')+sym.split('@')[0],{body:lab})}catch(e){}}}
 
+/* ---------- win/loss marks and locks on pairs ---------- */
+function lockedSym(sym){const u=curUser();if(!u||u.member||u.admin)return false;return !(u.freeSymbols||[]).includes(String(sym).split('@')[0].toUpperCase())}
+function lastRes(){const m={};hist().filter(e=>e.res==='W'||e.res==='L').sort((a,b)=>a.t-b.t).forEach(e=>{m[e.sym]=e.res});return m}
+const markOf=(m,s)=>m[s]==='W'?' ✓':m[s]==='L'?' ✗':'';
+function markPairs(){const sel=$('sym');if(!sel)return;const m=lastRes();
+ [...sel.options].forEach(o=>{if(!o.dataset.base)o.dataset.base=o.textContent;o.textContent=(lockedSym(o.value)?'🔒 ':'')+o.dataset.base+markOf(m,o.value)})}
+
 /* ---------- favourites + remembered selection ---------- */
 const favs=()=>LS.get('ms_fav',[]);
 function updFav(){const b=$('fav');if(b)b.textContent=favs().includes($('sym').value)?'★':'☆'}
@@ -84,7 +91,7 @@ function restorePrefs(){const p=LS.get('ms_sel',null);if(!p)return;
 
 /* ---------- higher-timeframe confirmation ---------- */
 const HT={'1min':'5min','5min':'15min','15min':'1h'},HTL={'1min':'5-minute','5min':'15-minute','15min':'1-hour'};
-async function htfTrend(sym,tf){try{const r=await fetch(`/.netlify/functions/candles?symbol=${encodeURIComponent(sym)}&interval=${HT[tf]}`),d=await r.json();
+async function htfTrend(sym,tf){try{const r=await apiFetch(`/.netlify/functions/candles?symbol=${encodeURIComponent(sym)}&interval=${HT[tf]}`),d=await r.json();
  if(!r.ok||!Array.isArray(d)||d.length<80)return 0;const c=d.map(v=>+v.close);c.pop();const a=ema(c,20),b=ema(c,50),i=c.length-1;return a[i]>b[i]?1:-1}catch(e){return 0}}
 
 /* ---------- multi-pair scanner ---------- */
@@ -92,7 +99,7 @@ let scanning=false,scanRows=[];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const VALID=/^[A-Z0-9.\-]{1,12}(\/[A-Z]{3,4}|@[A-Za-z0-9]{2,12})?$/;
 async function scanOne(sym,tf,ex,mode){const P=modeParams(mode,tf),stp=TF[tf]*1000;
- const r=await fetch(`/.netlify/functions/candles?symbol=${encodeURIComponent(sym)}&interval=${tf}`),d=await r.json();if(!r.ok)throw new Error(d.error||'error');
+ const r=await apiFetch(`/.netlify/functions/candles?symbol=${encodeURIComponent(sym)}&interval=${tf}`),d=await r.json();if(r.status===403)return{sym,s:0,sc:0,state:'locked'};if(!r.ok)throw new Error(d.error||'error');
  const cs=d.map(v=>({t:Date.parse(v.datetime.replace(' ','T')+'Z'),o:+v.open,h:+v.high,l:+v.low,c:+v.close})),lc=cs[cs.length-1];
  if(Date.now()-lc.t>stp*3)return{sym,s:0,sc:0,state:'closed'};
  const closed=lc.t+stp>Date.now()?cs.slice(0,-1):cs;resolveHist(sym,tf,closed);
@@ -102,18 +109,27 @@ async function scanOne(sym,tf,ex,mode){const P=modeParams(mode,tf),stp=TF[tf]*10
  return{sym,s,sc,state:s?'sig':hot?'news':'wait'}}
 function renderScan(){const box=$('sres');box.innerHTML='';
  scanRows.slice().sort((a,b)=>(b.s!==0)-(a.s!==0)||b.sc-a.sc).forEach(r=>{const d=el('div','sr'),b=el('span','bdg '+(r.s===1?'u':r.s===-1?'d':'w'));
-  b.textContent=r.err?t('error'):r.state==='closed'?t('Closed'):r.s===1?t('UP')+' ▲ '+r.sc+'/7':r.s===-1?t('DOWN')+' ▼ '+r.sc+'/7':r.state==='news'?t('NEWS WINDOW'):t('WAIT FOR DIRECTION');
-  d.appendChild(el('span','',r.sym.split('@')[0]));d.appendChild(b);d.onclick=()=>{ensureOption(r.sym);$('sym').value=r.sym;updFav();load();window.scrollTo({top:0,behavior:'smooth'})};box.appendChild(d)})}
+  b.textContent=r.err?t('error'):r.state==='locked'?'🔒 Members':r.state==='closed'?t('Closed'):r.s===1?t('UP')+' ▲ '+r.sc+'/7':r.s===-1?t('DOWN')+' ▼ '+r.sc+'/7':r.state==='news'?t('NEWS WINDOW'):t('WAIT FOR DIRECTION');
+  d.appendChild(el('span','',r.sym.split('@')[0]+markOf(lastRes(),r.sym)));d.appendChild(b);d.onclick=()=>{ensureOption(r.sym);$('sym').value=r.sym;updFav();load();window.scrollTo({top:0,behavior:'smooth'})};box.appendChild(d)})}
 async function scan(){if(scanning)return;scanning=true;scanRows=[];renderScan();$('sgo').disabled=true;
  const tf=$('tf').value,ex=+$('ex').value,mode=+$('st').value,list=[...$('sym').options].map(o=>o.value).filter(v=>VALID.test(v)),gap=60000/(+$('sspd').value);
  for(let i=0;i<list.length&&scanning;i++){$('sprog').textContent=(i+1)+' / '+list.length;$('spg').style.width=((i+1)/list.length*100)+'%';
-  try{scanRows.push(await scanOne(list[i],tf,ex,mode))}catch(e){scanRows.push({sym:list[i],s:0,sc:0,err:1})}
-  renderScan();if(i<list.length-1&&scanning)await sleep(gap)}
+  let row;try{row=await scanOne(list[i],tf,ex,mode)}catch(e){row={sym:list[i],s:0,sc:0,err:1}}scanRows.push(row)
+  renderScan();if(row.state!=='locked'&&i<list.length-1&&scanning)await sleep(gap)}
  scanning=false;$('sgo').disabled=false;$('sprog').textContent=t('Done')}
+
+/* ---------- account menu ---------- */
+function paintUser(u){const pl=$('plan');pl.textContent=u.admin?'ADMIN':u.member?'MEMBER':'FREE';pl.className='chip2 '+(u.admin?'a':u.member?'m':'');
+ $('uname').textContent=String(u.name||'').split(' ')[0];$('mh').textContent=u.email;$('adm').style.display=u.admin?'block':'none'}
+function initAccount(){const u=curUser();if(u)paintUser(u);
+ $('acc').onclick=e=>{e.stopPropagation();$('menu').classList.toggle('on')};document.addEventListener('click',()=>$('menu').classList.remove('on'));
+ $('out').onclick=()=>logout();
+ refreshMe().then(n=>{if(!n)return;const changed=!u||u.member!==n.member||u.admin!==n.admin;paintUser(n);if(changed){fill();markPairs();load()}})}
 
 /* ---------- start-up ---------- */
 let INST=null;
 function initFeatures(){
+ initAccount();
  restorePrefs();
  const P=LS.get('ms_pref',{});
  ['snd','ntf','tfc'].forEach(k=>{$(k).checked=!!P[k];$(k).addEventListener('change',()=>{const p=LS.get('ms_pref',{});p[k]=$(k).checked;LS.set('ms_pref',p);
