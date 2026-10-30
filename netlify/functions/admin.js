@@ -38,10 +38,15 @@ exports.handler = async (e) => {
     if (b.action === 'revoke') { const u = await target(); if (!u) return A.json(404, { error: 'User not found' }); u.until = 0; await users.set(u.email, u); return A.json(200, { ok: true }); }
     if (b.action === 'ban') { const u = await target(); if (!u) return A.json(404, { error: 'User not found' }); u.banned = !!b.banned; await users.set(u.email, u); return A.json(200, { ok: true }); }
     if (b.action === 'resetpw') {
-      const u = await target(), pw = String(b.password || '');
+      const u = await target();
       if (!u) return A.json(404, { error: 'User not found' });
+      // Passwords are stored as one-way hashes, so an old password can never be shown. Instead the owner can
+      // generate a new temporary password here (shown once) and send it to the member.
+      const AL = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+      const pw = b.generate ? Array.from({ length: 10 }, () => AL[crypto.randomInt(AL.length)]).join('') : String(b.password || '');
       if (pw.length < 8 || pw.length > 128) return A.json(400, { error: 'Password must be 8 to 128 characters' });
-      Object.assign(u, A.hash(pw), { fails: 0, lock: 0 }); await users.set(u.email, u); return A.json(200, { ok: true });
+      Object.assign(u, A.hash(pw), { fails: 0, lock: 0 }); await users.set(u.email, u);
+      return A.json(200, b.generate ? { ok: true, email: u.email, name: u.name, password: pw } : { ok: true });
     }
     if (b.action === 'delete') { const u = await target(); if (!u) return A.json(404, { error: 'User not found' }); await users.del(u.email); return A.json(200, { ok: true }); }
 

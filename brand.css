@@ -1,0 +1,14 @@
+/* MRK TRADER animated header name + live icon (shared by every page) */
+.mrk{display:inline-flex;align-items:baseline;gap:1px;font-weight:900;letter-spacing:.5px}
+.mrk i{font-style:normal;display:inline-block;background:linear-gradient(180deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent;
+ animation:mrkwave 2.4s ease-in-out infinite;animation-delay:calc(var(--k)*110ms);filter:drop-shadow(0 0 7px color-mix(in srgb,var(--ac) 50%,transparent))}
+.mrk i.sp{width:.3em}
+@keyframes mrkwave{0%,55%,100%{transform:translateY(0)}25%{transform:translateY(-4px)}}
+.livebadge{display:inline-flex;align-items:center;gap:6px;padding:3px 9px 3px 8px;border-radius:99px;border:1px solid #ff3b4e;background:rgba(255,59,78,.12);color:#ff3b4e;font:800 11px/1 "Inter","Segoe UI",system-ui,sans-serif;letter-spacing:1.2px;white-space:nowrap}
+.livebadge b{width:8px;height:8px;border-radius:50%;background:#ff3b4e;box-shadow:0 0 0 0 rgba(255,59,78,.7);animation:livering 1.4s infinite}
+.livebadge s{display:inline-flex;align-items:flex-end;gap:2px;height:11px;text-decoration:none}
+.livebadge s u{display:block;width:2.5px;background:#ff3b4e;border-radius:1px;animation:livebar 1s ease-in-out infinite;text-decoration:none}
+.livebadge s u:nth-child(1){height:5px}.livebadge s u:nth-child(2){height:11px;animation-delay:.2s}.livebadge s u:nth-child(3){height:7px;animation-delay:.4s}
+@keyframes livering{70%{box-shadow:0 0 0 7px rgba(255,59,78,0)}100%{box-shadow:0 0 0 0 rgba(255,59,78,0)}}
+@keyframes livebar{50%{transform:scaleY(.35)}}
+.bl.nobox{gap:10px}

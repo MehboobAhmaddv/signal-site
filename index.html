@@ -6,10 +6,11 @@
 <meta name="theme-color" content="#060a12">
 <script>if(!localStorage.getItem("ms_tok"))location.replace("login.html")</script>
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="brand.css">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
-<title>MeHbOOb AhMaD 🔥 – CALL / PUT Signals</title>
-<meta name="description" content="MeHbOOb AhMaD: indicator-based CALL / PUT suggestions for forex, metals, stocks and crypto with a live chart, news filter and an honest live backtest.">
+<title>MRK TRADER – CALL / PUT Signals</title>
+<meta name="description" content="MRK TRADER: indicator-based CALL / PUT suggestions for forex, metals, stocks and crypto with a live chart, news filter and an honest live backtest.">
 <style>
 :root{--bg:#060a12;--bg2:#0b1220;--card:rgba(255,255,255,.045);--card2:#0e1626;--bd:rgba(255,255,255,.09);--tx:#eef2fa;--mu:#8a96ab;--up:#2ee59d;--dn:#ff5c6c;--ac:#f5b942;--ac2:#ff8a3d;--sel:#101a2c;--sh:0 24px 60px rgba(0,0,0,.45)}
 @media(prefers-color-scheme:light){:root{--bg:#f2f5fb;--bg2:#e7edf8;--card:rgba(255,255,255,.82);--card2:#fff;--bd:rgba(16,24,40,.1);--tx:#0f1729;--mu:#5a6478;--up:#07935a;--dn:#d6283b;--ac:#c4800a;--ac2:#e0600f;--sel:#fff;--sh:0 20px 50px rgba(30,50,90,.14)}}
@@ -75,7 +76,7 @@ select:focus,#q:focus{border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in s
 .dots i.on{background:linear-gradient(90deg,var(--ac),var(--ac2))}
 .why{list-style:none;margin:16px auto 0;padding:0;max-width:440px;text-align:left;font-size:13.5px;color:var(--mu)}
 .why li{padding:5px 0 5px 24px;position:relative}
-.why li:before{content:"✓";position:absolute;left:0;color:var(--up);font-weight:800}
+.why li:before{content:"•";position:absolute;left:0;color:var(--up);font-weight:800}
 .why.none li:before{content:"•";color:var(--mu)}
 .cdbox{margin-top:18px}
 .ringbox{position:relative;width:132px;height:132px;margin:0 auto}
@@ -158,7 +159,6 @@ html{scrollbar-width:thin;scrollbar-color:var(--ac) transparent}
 .avw{width:42px;height:42px;border-radius:50%;padding:2px;flex:none;background:conic-gradient(var(--ac),var(--ac2),#3b82f6,var(--up),var(--ac));animation:spin 8s linear infinite}
 .av{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;border:2px solid var(--bg);animation:spin 8s linear infinite reverse}
 .bn{margin:0;font-weight:800;font-size:clamp(15px,4.4vw,19px);letter-spacing:.3px;white-space:nowrap;line-height:1.1}
-.bn span{background:linear-gradient(90deg,var(--ac),var(--ac2),var(--ac));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite}
 .chip2{font-size:11.5px;font-weight:800;padding:5px 11px;border-radius:99px;border:1px solid var(--bd);color:var(--mu);letter-spacing:.6px}.chip2.m{color:var(--up);border-color:var(--up)}.chip2.a{color:var(--ac);border-color:var(--ac)}
 .acc{position:relative}.menu{position:absolute;inset-inline-end:0;top:calc(100% + 10px);min-width:210px;background:var(--card2);border:1px solid var(--bd);border-radius:16px;box-shadow:var(--sh);padding:8px;display:none;z-index:40}
 .menu.on{display:block}.menu a,.menu button{display:block;width:100%;text-align:start;padding:10px 12px;border:0;background:none;color:var(--tx);font:600 14px "Inter","Segoe UI",system-ui,sans-serif;border-radius:10px;cursor:pointer;text-decoration:none}
@@ -170,6 +170,20 @@ html{scrollbar-width:thin;scrollbar-color:var(--ac) transparent}
 @media(max-width:700px){.stat{display:none}.hart{display:none}}
 @media(max-width:520px){.chip2,#uname{display:none}}
 @media(max-width:480px){.stat #clk{display:none}.stat{padding:8px}.nb{padding:6px 10px}.brand h1{font-size:clamp(15px,4.8vw,19px)}.grid{gap:8px}.m b{font-size:16px}.card{padding:16px;border-radius:18px}}
+/* ---- toolbar under the header, live pairs, knowledge, footer ---- */
+.bar2{border-bottom:1px solid var(--bd);background:color-mix(in srgb,var(--bg) 60%,transparent)}
+.bar2i{max-width:980px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bar2 .nb{font-size:12.5px;text-decoration:none;display:inline-flex}
+.bar2 select.nb{width:auto;padding:6px 10px;appearance:auto;color-scheme:dark light}
+.clk{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--mu);font-variant-numeric:tabular-nums;white-space:nowrap}
+.clk b{color:var(--tx);font-weight:700}
+.planb.f{color:var(--mu)}.planb.m{color:var(--up);border-color:var(--up)}.planb.a{color:var(--ac);border-color:var(--ac)}
+.bn{display:flex;align-items:center;gap:10px;font-size:clamp(17px,5vw,22px)}
+.know{font-size:14.5px;line-height:1.75;color:var(--mu)}.know b{color:var(--tx)}
+.cu{margin:0 0 4px;font-size:15px;letter-spacing:3px;color:var(--ac)}
+.ft .by{margin-top:18px}.ft .rr{margin-top:6px;font-size:13px}
+.mode.lk{opacity:.75}
+@media(max-width:480px){.livebadge{padding:3px 7px}.bar2i{gap:6px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -177,15 +191,20 @@ html{scrollbar-width:thin;scrollbar-color:var(--ac) transparent}
 <div class="bg"><span></span><span></span><span></span></div>
 
 <header class="nav"><div class="navi">
-  <a class="bl" href="index.html"><span class="avw"><img class="av" src="images/creator.jpg" alt="" width="42" height="42"></span><h1 class="bn">MeHbOOb <span>AhMaD 🔥</span></h1></a>
+  <a class="bl" href="index.html"><h1 class="bn"><span class="mrk" aria-label="MRK TRADER"><i style="--k:0">M</i><i style="--k:1">R</i><i style="--k:2">K</i><i class="sp" style="--k:3">&nbsp;</i><i style="--k:4">T</i><i style="--k:5">R</i><i style="--k:6">A</i><i style="--k:7">D</i><i style="--k:8">E</i><i style="--k:9">R</i></span><span class="livebadge" title="Live"><b></b>LIVE<s aria-hidden="true"><u></u><u></u><u></u></s></span></h1></a>
   <div class="navr">
-    <button class="nb" id="inst" style="display:none" data-t>Install app</button><button class="nb" id="lang">اردو</button>
-    <span class="chip2" id="plan"></span>
-    <div class="stat"><b class="dot"></b><span id="clk">--:--:-- UTC</span></div>
     <div class="acc"><button class="nb" id="acc" type="button" aria-haspopup="true">👤 <span id="uname"></span></button>
       <div class="menu" id="menu"><div class="mh" id="mh"></div><a href="membership.html" data-t>Membership</a><a href="admin.html" id="adm" style="display:none" data-t>Admin panel</a><button id="out" type="button" data-t>Log out</button></div></div>
   </div>
 </div></header>
+<div class="bar2"><div class="bar2i">
+  <span class="clk">🕒 <b id="clk">--:--:--</b></span>
+  <select class="nb" id="tz" aria-label="Time zone"></select>
+  <select class="nb" id="lang" aria-label="Language"><option value="en">English</option><option value="ur">اردو</option><option value="hi">हिन्दी</option></select>
+  <a class="nb planb" id="plan" href="membership.html"></a>
+  <button class="nb" id="lvp" type="button">📡 <span data-t>Live Signals Pairs</span></button>
+  <button class="nb" id="inst" style="display:none" data-t>Install app</button>
+</div></div>
 
 <main class="w">
 <section class="hero rise" style="--i:0">
@@ -197,13 +216,15 @@ html{scrollbar-width:thin;scrollbar-color:var(--ac) transparent}
   <svg class="hart" viewBox="0 0 300 120" aria-hidden="true"><defs><linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#f5b942"/><stop offset="1" stop-color="#2ee59d"/></linearGradient></defs><path d="M4 100 L40 80 L70 92 L105 54 L140 66 L178 30 L214 46 L250 14 L296 24" fill="none" stroke="url(#hg)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="296" cy="24" r="5" fill="#2ee59d"/></svg>
 </section>
 
+<div class="card rise" style="--i:1"><div class="h"><i></i><span data-t>Knowledge</span></div><p class="know" id="knowb"></p></div>
+
 <div class="card rise" style="--i:1"><div class="row">
   <div><label data-t>Market</label><select id="mk"><option value="fx" data-t>Forex</option><option value="mt" data-t>Metals</option><option value="cr" data-t>Crypto</option><option value="st" data-t>Stocks</option><option value="fav" data-t>★ Favorites</option></select></div>
   <div><label><span data-t>Symbol</span> <button type="button" id="fav" class="star" title="Favourite">☆</button></label><select id="sym"></select></div>
   <div id="srow"><label data-t>Search any company</label><input id="q" placeholder="Type a company name or ticker, e.g. Tesla or NVDA" autocomplete="off"></div>
   <div><label data-t>Candle</label><select id="tf"><option value="1min" data-t>1 minute</option><option value="5min" selected data-t>5 minutes</option><option value="15min" data-t>15 minutes</option></select></div>
   <div><label data-t>Expiry (candles)</label><select id="ex"><option>1</option><option selected>3</option><option>5</option><option>10</option></select></div>
-  <div id="mrow"><label data-t>Signal mode</label><div class="modes" id="modes"></div><input type="hidden" id="st" value="40"></div>
+  <div id="mrow"><label data-t>Signal mode</label><div class="modes" id="modes"></div><input type="hidden" id="st" value="2"></div>
   <div class="tgl"><label class="sw"><input type="checkbox" id="snd"><span data-t>Sound alerts</span></label><label class="sw"><input type="checkbox" id="ntf"><span data-t>Notifications</span></label><label class="sw"><input type="checkbox" id="tfc"><span data-t>Confirm with higher timeframe</span></label></div>
 </div></div>
 
@@ -231,6 +252,14 @@ html{scrollbar-width:thin;scrollbar-color:var(--ac) transparent}
     <div class="m"><b id="vt">–</b><span data-t>Trend</span></div>
     <div class="m"><b id="vb">–</b><span data-t>Bollinger</span></div>
   </div>
+</div>
+
+<div class="card rise" id="lvc" style="--i:3">
+  <div class="h"><i></i><span data-t>Live Signals Pairs</span><span class="live"><b></b>LIVE</span></div>
+  <p class="sub" data-t>Shows only the pairs that have a signal right now, using the candle, expiry and mode selected above.</p>
+  <div class="btns"><button class="btn" id="lgo" type="button" data-t>Show live signal pairs</button></div>
+  <div class="pbar"><i id="lpg"></i></div><div class="pt" id="lprog"></div>
+  <div class="sres" id="lres"></div>
 </div>
 
 <div class="card rise" id="cc" style="--i:3">
@@ -294,11 +323,13 @@ html{scrollbar-width:thin;scrollbar-color:var(--ac) transparent}
 <div class="card disc rise" id="discl" style="--i:7"><b>Important.</b> This site is an educational technical-analysis tool, not financial advice. Signals combine several indicators and a news check to filter weak setups, but they are not guarantees, and no strategy wins reliably on short expiries. Most people who trade binary options lose money, and binary options are restricted or banned for retail traders in many countries (including the EU, UK and Australia). Check your local rules and never risk money you can’t afford to lose. This site is not affiliated with Quotex or any broker. Prices come from a third-party data provider and can differ from your broker’s, and broker-specific OTC pairs are not covered. Metals and stocks depend on your data plan (free plans mainly cover US stocks), and each market has opening hours.</div>
 
 <footer class="ft rise" style="--i:7">
-  <span data-t>Created By</span> <b>MeHbOOb AhMaD 🇵🇰</b>
+  <h3 class="cu" data-t>CONTACT US</h3>
   <div class="soc">
-    <a class="wa em" href="mailto:mehboobgaxar@gmail.com" aria-label="Send an email"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#fff"/><rect x="6" y="8" width="12" height="8.5" rx="1.4" fill="none" stroke="#ea4335" stroke-width="1.7"/><path d="M6.4 8.8 12 13l5.6-4.2" fill="none" stroke="#ea4335" stroke-width="1.7" stroke-linejoin="round"/></svg><span data-t>Email</span></a>
     <a class="wa tg" href="https://t.me/Markhorpro" target="_blank" rel="noopener" aria-label="Chat on Telegram"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#fff"/><path fill="#229ed9" d="M5.4 11.9 17.6 7.2c.6-.2 1.1.1.9.8l-2 9.2c-.1.6-.5.8-1 .5l-2.9-2.1-1.4 1.4c-.2.2-.3.3-.6.3l.2-3 5.4-4.9c.2-.2-.1-.3-.3-.1l-6.7 4.2-2.9-.9c-.6-.2-.6-.6.1-.9z"/></svg><span data-t>Telegram</span></a>
+    <a class="wa em" href="mailto:mehboobgaxar@gmail.com" aria-label="Send an email"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#fff"/><rect x="6" y="8" width="12" height="8.5" rx="1.4" fill="none" stroke="#ea4335" stroke-width="1.7"/><path d="M6.4 8.8 12 13l5.6-4.2" fill="none" stroke="#ea4335" stroke-width="1.7" stroke-linejoin="round"/></svg><span data-t>Email</span></a>
   </div>
+  <div class="by"><span data-t>Created By</span> <b>MRK TRADER ™ 🇵🇰</b></div>
+  <div class="rr">All Rights Reserved. 2026 ✓</div>
 </footer>
 </main>
 
@@ -307,17 +338,17 @@ html{scrollbar-width:thin;scrollbar-color:var(--ac) transparent}
 <script src="features.js"></script>
 <script>
 const $=id=>document.getElementById(id);
-const PAYOUT=0.85,TF={'1min':60,'5min':300,'15min':900},MIN={30:5,35:4,40:3,45:3,50:3};
+const PAYOUT=0.85,TF={'1min':60,'5min':300,'15min':900};
 const PAIRS=['EUR/USD','GBP/USD','USD/JPY','USD/CHF','AUD/USD','USD/CAD','NZD/USD','EUR/GBP','EUR/JPY','EUR/CHF','EUR/AUD','EUR/CAD','EUR/NZD','GBP/JPY','GBP/CHF','GBP/AUD','GBP/CAD','GBP/NZD','AUD/JPY','AUD/CAD','AUD/CHF','AUD/NZD','CAD/JPY','CAD/CHF','CHF/JPY','NZD/JPY','NZD/CAD','NZD/CHF','BTC/USD','ETH/USD'];
 const LIST={fx:PAIRS.map(p=>[p,p]),
  mt:[['XAU/USD','Gold (XAU/USD)'],['XAG/USD','Silver (XAG/USD)'],['XPT/USD','Platinum (XPT/USD)'],['XPD/USD','Palladium (XPD/USD)']],
  cr:['BTC','ETH','SOL','XRP','BNB','ADA','DOGE','LTC'].map(c=>[c+'/USD',c+'/USD']),
  st:[['AAPL','Apple (AAPL)'],['MSFT','Microsoft (MSFT)'],['GOOGL','Alphabet (GOOGL)'],['AMZN','Amazon (AMZN)'],['NVDA','NVIDIA (NVDA)'],['META','Meta (META)'],['TSLA','Tesla (TSLA)'],['NFLX','Netflix (NFLX)'],['AMD','AMD (AMD)'],['INTC','Intel (INTC)'],['JPM','JPMorgan (JPM)'],['V','Visa (V)'],['MA','Mastercard (MA)'],['WMT','Walmart (WMT)'],['DIS','Disney (DIS)'],['KO','Coca-Cola (KO)'],['PEP','PepsiCo (PEP)'],['NKE','Nike (NKE)'],['BA','Boeing (BA)'],['XOM','ExxonMobil (XOM)']]};
-const MODES=[[50,'Fast Mode','Every candle, no break'],[45,'Active Mode','3+ signals per 15 min'],[40,'Relaxed Mode','3–4 signals per hour'],[30,'Premium Mode','5–10 signals per day'],[35,'Ultra Premium Mode','Rarest, strictest setups']];
+const MODES=[[1,'Fast Mode','Every candle, no break'],[2,'Relaxed Mode','Strength 4/7 or higher'],[3,'Premium Mode','Strength 5/7 or higher']];
 function drawModes(){const box=$('modes');box.innerHTML='';
- MODES.forEach(([v,n,sub])=>{const b=document.createElement('button');b.type='button';b.className='mode'+(+$('st').value===v?' on':'');
-  b.textContent=t(n);const sm=document.createElement('small');sm.textContent=t(sub);b.appendChild(sm);
-  b.onclick=()=>{$('st').value=v;drawModes();load()};box.appendChild(b)})}
+ MODES.forEach(([v,n,sub])=>{const b=document.createElement('button');b.type='button';b.className='mode'+(+$('st').value===v?' on':'')+(modeLocked(v)?' lk':'');
+  b.textContent=(modeLocked(v)?'🔒 ':'')+t(n);const sm=document.createElement('small');sm.textContent=t(sub);b.appendChild(sm);
+  b.onclick=()=>{if(modeLocked(v)){$('warn').style.display='block';$('warn').textContent=t('Premium mode is for paid members. Upgrade to unlock it.');return}$('st').value=v;drawModes();load()};box.appendChild(b)})}
 drawModes();
 function fill(){LIST.fav=favs().filter(v=>VALID.test(v)).map(v=>[v,v.split('@')[0]]);if(!LIST.fav.length)LIST.fav=[['EUR/USD','EUR/USD']];const m=$('mk').value;$('sym').innerHTML=LIST[m].map(([v,l])=>`<option value="${v}">${l}</option>`).join('');$('srow').style.display=m==='st'?'block':'none';updFav();markPairs()}
 fill();
@@ -365,7 +396,7 @@ function showState(title,badge,note,ms,wait){
  $('vd').textContent=note;retryT=setTimeout(load,ms)}
 function showDown(m){const ok=m&&!/error|fetch|JSON|Unexpected|Failed/i.test(m);
  showState('Updating…','WAITING FOR LIVE MARKET DATA',(ok?m+' ':'')+'No signal is shown without live market data. Retrying automatically.',30000,'Retrying in 30 seconds')}
-function showLocked(){showState('MEMBERS ONLY','UPGRADE TO UNLOCK THIS PAIR','Free accounts can use BTC/USD and EUR/USD. Upgrade to unlock every pair, the scanner, company search and Telegram alerts.',600000,'');$('upg').style.display='inline-block'}
+function showLocked(){showState('MEMBERS ONLY','UPGRADE TO UNLOCK THIS PAIR','Free accounts can use '+(((curUser()||{}).freeSymbols)||[]).join(', ')+' in Fast and Relaxed mode. Upgrade to unlock every pair, Premium mode, company search and Telegram alerts.',600000,'');$('upg').style.display='inline-block'}
 function showClosed(){showState('Market Closed','THIS MARKET IS CLOSED RIGHT NOW','No fresh prices to analyse. Forex and metals close on weekends and stocks trade only during exchange hours. Crypto trades 24/7, so try BTC/USD or ETH/USD.',300000,'Checking again in 5 minutes');$('nw').textContent='Paused while the market is closed.'}
 
 function hotEvent(sym,ev,mins){const c=cur(sym),n=Date.now();
@@ -375,22 +406,17 @@ function renderNews(sym,ev){const box=$('nw');box.innerHTML='';
  const c=cur(sym),up=ev.filter(e=>c.includes(e.c)&&e.t>Date.now()-30*60000).sort((a,b)=>a.t-b.t).slice(0,5);
  if(!up.length){box.textContent='No high or medium impact news left this week for '+c.join(' / ')+'.';return}
  up.forEach(e=>{const d=document.createElement('div'),l=document.createElement('span'),t=document.createElement('span');
-  l.textContent=new Date(e.t).toLocaleString([],{weekday:'short',hour:'2-digit',minute:'2-digit'})+' · '+e.c+' · '+e.n;
+  l.textContent=fmtWD(e.t)+' · '+e.c+' · '+e.n;
   t.className='tag '+e.i;t.textContent=e.i;d.appendChild(l);d.appendChild(t);box.appendChild(d)})}
 
-const CPH={'1min':60,'5min':12,'15min':4};
-function modeParams(m,tf){const step=TF[tf]*1000,c=CPH[tf];
- if(m===50)return{rate:1,step};
- if(m===45)return{rate:tf==='1min'?0.25:1,step};
- if(m===40)return{rate:Math.min(0.9,3.5/c),step};
- if(m===30)return{rate:7.5/(c*24),step};
- return{both:true,rate:2.5/(c*24),rsi:35,min:4,step}}
-const MODE_NOTE={50:'Fast Mode gives a direction on every candle, so many signals are low quality. Use a demo account and check the backtest.',45:'Active Mode gives frequent signals, so many are low quality. Use a demo account and check the backtest.',30:'Premium Mode gives only a few signals per day, so the backtest below may have too few trades to judge.',35:'Ultra Premium Mode is very strict and may give 0 to 3 signals a day, so the backtest below may have too few trades to judge.'};
+function modeParams(m,tf){const step=TF[tf]*1000;return{min:m===3?5:m===2?4:0,step}}
+const MODE_NOTE={1:'Fast Mode gives a direction on every candle, so many signals are low quality. Use a demo account and check the backtest.',3:'Premium Mode gives only strong setups (5/7 or more), so there may be few signals and the backtest below may have too few trades to judge.'};
 let busy=false,again=false,live=false,step=300000,curBar=0,lastPoll=0,btKey='',evCache=null,newsAt=0;
 async function load(quiet){const q=quiet===true;if(busy){if(!q)again=true;return}
  busy=true;try{await loadInner(q)}finally{busy=false;if(again){again=false;load()}}}
 async function loadInner(q){
  clearTimeout(retryT);
+ if(modeLocked(+$('st').value)){$('st').value=2;drawModes()}
  const sym=$('sym').value,tf=$('tf').value,ex=+$('ex').value,mode=+$('st').value,P=modeParams(mode,tf);step=TF[tf]*1000;savePrefs();
  let cs;
  try{
@@ -409,13 +435,13 @@ async function loadInner(q){
  const hot=ev&&hotEvent(sym,ev,ex*TF[tf]/60);
  const hr=new Date((Math.floor(Date.now()/step)+1)*step).getUTCHours();
  if(hot){s=0;why=[];block='High-impact news: '+hot.c+' '+hot.n}
- else if(mode!==50&&isFx(sym)&&hr>=21&&hr<23){s=0;why=[];block='Low-liquidity rollover hour'}
+ else if(mode!==1&&isFx(sym)&&hr>=21&&hr<23){s=0;why=[];block='Low-liquidity rollover hour'}
  if(s&&$('tfc').checked){const hd=await htfTrend(sym,tf);if(hd&&hd!==s){s=0;why=[];block='Against the '+HTL[tf]+' trend'}else if(hd===s)why=why.concat('Higher timeframe ('+HTL[tf]+') agrees')}
  const lab=sym.split('@')[0]+' · '+$('tf').selectedOptions[0].text;
  $('pr').textContent=lab;$('ct').textContent=lab;$('cc').style.display='block';
  const xd=forming?calc(cs):x;last={x:xd,s,mk:i};draw(xd,s,i);
  const dec=lc.c>1000?2:lc.c>50?3:5;$('lp').textContent=lc.c.toFixed(dec);$('lp').style.color=lc.c>=lc.o?'var(--up)':'var(--dn)';
- const str=Math.min(7,Math.max(1,Math.round(res.sc)));
+ const str=strength(res.sc);
  if(s){setCard(s,t(s===1?'UP':'DOWN'),t(s===1?'CALL':'PUT')+' · '+t('SETUP STRENGTH')+' '+str+'/7',why,str);
   const lcl=closed[closed.length-1];if(recordSignal({sym,tf,mode,ex,s,str,t:lcl.t,entry:lcl.c})&&q)alertSignal(s,sym,lab)}
  else setCard(0,t(hot?'NEWS WINDOW':'WAIT FOR DIRECTION'),t('PAUSED'),[block||'Waiting for a high-quality setup'],0);
@@ -441,10 +467,10 @@ function tick(){if(!live)return;
  const n=Date.now(),nb=(Math.floor(n/step)+1)*step,left=nb-n,sec=Math.ceil(left/1000);
  $('cdn').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
  $('cbar').style.strokeDashoffset=(326.7*left/step).toFixed(1);
- $('cd').textContent=t('Next candle at')+' '+new Date(nb).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' · '+t('enter the trade when it opens');
+ $('cd').textContent=t('Next candle at')+' '+fmtT(nb,true)+' '+tzCode()+' · '+t('enter the trade when it opens');
  const bar=Math.floor(n/step);
  if(bar!==curBar){curBar=bar;lastPoll=n;setTimeout(()=>load(true),3000)}
- else if(n-lastPoll>15000&&!scanning){lastPoll=n;load(true)}}
+ else if(n-lastPoll>15000&&!scanning&&!lscan){lastPoll=n;load(true)}}
 ['sym','tf','ex','st'].forEach(id=>$(id).addEventListener('change',load));
 $('mk').addEventListener('change',()=>{fill();load()});
 let qt=null;
@@ -457,7 +483,7 @@ $('q').addEventListener('input',()=>{clearTimeout(qt);const v=$('q').value.trim(
    o.textContent=x.s+' · '+x.n+(x.x?' ('+x.x+')':'');sel.appendChild(o)});
   load();
  }catch(e){}},450)});
-const clock=()=>{$('clk').textContent=new Date().toISOString().slice(11,19)+' UTC'};clock();setInterval(clock,1000);
+const clock=()=>{$('clk').textContent=fmtT(Date.now(),true)+' '+tzCode()};clock();setInterval(clock,1000);
 initFeatures();
 load();
 </script>
