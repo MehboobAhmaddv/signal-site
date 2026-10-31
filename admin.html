@@ -5,16 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#060a12">
-<title>Admin · MRK TRADER</title>
+<title>Admin · MRK TRADER™ 🔥</title>
 <link rel="stylesheet" href="theme.css">
-<link rel="stylesheet" href="brand.css">
 <script>if(!localStorage.getItem('ms_tok'))location.replace('login.html?next=admin.html')</script>
 <style>.act{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.act input{width:70px;padding:6px 8px;border-radius:9px;font-size:13px}.tbl td small{color:var(--mu)}</style>
 </head>
 <body>
 <div class="bg"><span></span><span></span></div>
 <header class="nav"><div class="navi">
-  <a class="bl" href="index.html"><span class="bn"><span class="mrk" aria-label="MRK TRADER"><i style="--k:0">M</i><i style="--k:1">R</i><i style="--k:2">K</i><i class="sp" style="--k:3">&nbsp;</i><i style="--k:4">T</i><i style="--k:5">R</i><i style="--k:6">A</i><i style="--k:7">D</i><i style="--k:8">E</i><i style="--k:9">R</i></span><span class="livebadge" title="Live"><b></b>LIVE<s aria-hidden="true"><u></u><u></u><u></u></s></span></span></a><span class="bdg a">Admin panel</span>
+  <a class="bl" href="index.html"><span class="avw"><span class="av mono">MRK</span></span><span class="bn">Admin <span>panel</span></span></a>
   <div class="navr"><a class="nb" href="index.html">← Dashboard</a><button class="nb" id="out" type="button">Log out</button></div>
 </div></header>
 <main class="w">
@@ -23,11 +22,6 @@
     <div class="msg" id="gm"></div></div>
 
   <div class="card rise" style="--i:1"><p class="eyebrow">Orders waiting for you</p><div class="scr"><table class="tbl"><thead><tr><th>Date</th><th>User</th><th>Plan</th><th>Amount</th><th>TXID</th><th></th></tr></thead><tbody id="ro"></tbody></table></div></div>
-
-  <div class="card hide" id="cred"><p class="eyebrow">Login details to send to the member</p>
-    <p class="sub" style="margin:8px 0">Old passwords are stored as one-way hashes, so nobody (not even you) can read them. A new temporary password is shown here once.</p>
-    <div class="code" id="credtxt" style="white-space:pre-wrap"></div>
-    <div class="row" style="margin-top:12px"><button class="btn sm" id="credcopy" type="button">Copy message with support chat</button><button class="btn ghost sm" id="credpw" type="button">Copy password only</button></div></div>
 
   <div class="card rise" style="--i:2"><p class="eyebrow">Users</p>
     <div class="row" style="margin:12px 0"><input id="q" placeholder="Search name or email" style="max-width:320px"><button class="btn ghost sm" id="rf" type="button">Refresh</button></div>
@@ -43,12 +37,6 @@ const say=(t,ok)=>{$('gm').className='msg '+(ok?'ok':'err');$('gm').textContent=
 async function call(body){const r=await post('admin',body);if(!r.ok){say(r.data.error,false);if(r.status===403)setTimeout(()=>location.href='index.html',1200)}return r}
 function cell(tr,txt,sub){const td=h('td','',txt);if(sub){td.appendChild(document.createElement('br'));td.appendChild(h('small','',sub))}tr.appendChild(td);return td}
 function btn(label,cls,fn){const b=h('button','btn sm '+cls,label);b.onclick=async()=>{b.disabled=true;await fn();b.disabled=false};return b}
-const SUPPORT='https://t.me/Markhorpro';let credMsg='',credPw='';
-function showCred(d){const url=location.origin+'/login.html';
- credPw=d.password;credMsg='Hello '+(d.name||'')+',\nYour MRK TRADER login:\nEmail: '+d.email+'\nPassword: '+d.password+'\nLogin: '+url+'\n\nNeed help? Support chat: '+SUPPORT;
- $('credtxt').textContent=credMsg;$('cred').classList.remove('hide');$('cred').scrollIntoView({behavior:'smooth',block:'center'})}
-const copy=async(txt,ok)=>{try{await navigator.clipboard.writeText(txt);say(ok,true)}catch(e){say('Copy failed. Select the text and copy it by hand.',false)}};
-$('credcopy').onclick=()=>copy(credMsg,'Message copied. Paste it to the member.');$('credpw').onclick=()=>copy(credPw,'Password copied.');
 async function stats(){const r=await call({action:'stats'});if(!r.ok)return;const d=r.data;$('s1').textContent=d.users;$('s2').textContent=d.members;$('s3').textContent=d.revenue.toFixed(2);$('s4').textContent=d.review;$('s5').textContent=d.banned}
 async function users(){const r=await call({action:'users',q:$('q').value});if(!r.ok)return;const tb=$('us');tb.innerHTML='';
  r.data.users.forEach(u=>{const tr=h('tr');cell(tr,u.name,u.email);const st=h('td');st.appendChild(h('span','bdg '+(u.banned?'d':u.admin?'a':u.member?'u':''),u.banned?'Blocked':u.admin?'Admin':u.member?'Member':'Free'));tr.appendChild(st);
@@ -56,8 +44,7 @@ async function users(){const r=await call({action:'users',q:$('q').value});if(!r
   if(!u.admin){w.appendChild(btn('Add days','',async()=>{const x=await call({action:'grant',email:u.email,days:d.value});if(x.ok){say('Added '+d.value+' days to '+u.email,true);users();stats()}}));
    w.appendChild(btn('Revoke','ghost',async()=>{const x=await call({action:'revoke',email:u.email});if(x.ok){say('Membership removed',true);users();stats()}}));
    w.appendChild(btn(u.banned?'Unblock':'Block','ghost',async()=>{const x=await call({action:'ban',email:u.email,banned:!u.banned});if(x.ok){users();stats()}}));
-   w.appendChild(btn('New password','',async()=>{if(!confirm('Make a new temporary password for '+u.email+'? Their old password stops working.'))return;const x=await call({action:'resetpw',email:u.email,generate:true});if(x.ok){showCred(x.data);say('New password created. Copy it and send it to the member.',true)}}));
-   w.appendChild(btn('Set password','ghost',async()=>{const p=prompt('New password for '+u.email+' (8+ characters):');if(!p)return;const x=await call({action:'resetpw',email:u.email,password:p});if(x.ok)showCred({email:u.email,name:u.name,password:p})}));
+   w.appendChild(btn('Reset password','ghost',async()=>{const p=prompt('New password for '+u.email+' (8+ characters):');if(!p)return;const x=await call({action:'resetpw',email:u.email,password:p});if(x.ok)say('Password changed. Send it to the user privately.',true)}));
    w.appendChild(btn('Delete','red',async()=>{if(!confirm('Delete '+u.email+' permanently?'))return;const x=await call({action:'delete',email:u.email});if(x.ok){say('User deleted',true);users();stats()}}))}
   a.appendChild(w);tr.appendChild(a);tb.appendChild(tr)})}
 async function orders(){const r=await call({action:'orders'});if(!r.ok)return;const ro=$('ro'),al=$('al');ro.innerHTML='';al.innerHTML='';
@@ -70,5 +57,5 @@ async function orders(){const r=await call({action:'orders'});if(!r.ok)return;co
 let qt;$('q').addEventListener('input',()=>{clearTimeout(qt);qt=setTimeout(users,350)});$('rf').onclick=()=>{stats();users();orders()};
 (async()=>{const me=await refreshMe();if(!me||!me.admin){location.replace('index.html');return}stats();users();orders()})();
 </script>
-</body>
+<script src="support.js"></script></body>
 </html>

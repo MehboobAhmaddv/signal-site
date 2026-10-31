@@ -21,12 +21,11 @@ exports.handler = async (e) => {
     if (b.action === 'register') {
       const name = String(b.name || '').trim().slice(0, 60) || email.split('@')[0];
       if (pw.length < 8 || pw.length > 128) return A.json(400, { error: 'Password must be 8 to 128 characters' });
-      if (b.agree !== true) return A.json(400, { error: 'Please accept the Disclaimer & Agreement to create an account' });
       if (A.isAdmin(email) && !(process.env.ADMIN_PASSWORD && same(pw, process.env.ADMIN_PASSWORD)))
         return A.json(403, { error: 'This email is reserved for the site owner.' });
       if (await users.get(email)) return A.json(409, { error: 'An account with this email already exists' });
       const { salt, hash } = A.hash(pw);
-      const u = { email, name, salt, hash, created: Date.now(), agreed: Date.now(), until: 0, banned: false, orders: [], fails: 0, lock: 0 };
+      const u = { email, name, salt, hash, created: Date.now(), until: 0, banned: false, orders: [], fails: 0, lock: 0 };
       await users.set(email, u);
       return A.json(200, { token: A.sign(email), user: A.pub(u) });
     }

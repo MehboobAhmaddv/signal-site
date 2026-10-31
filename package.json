@@ -1,8 +1,1 @@
-{
-  "name": "mrk-trader-signals",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "@netlify/blobs": "8.1.1"
-  }
-}
+{"name":"mrk-trader","version":"2.1.0","private":true,"dependencies":{"@netlify/blobs":"8.1.1"}}

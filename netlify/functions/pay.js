@@ -2,11 +2,10 @@
 const crypto = require('crypto');
 const A = require('../lib/auth');
 const db = require('../lib/db');
-const N = require('../lib/notify');
 
 const DAY = 864e5, OPEN = ['PENDING', 'AWAITING_PAYMENT', 'REVIEW'];
 const autoOn = () => !!(process.env.BINANCE_PAY_KEY && process.env.BINANCE_PAY_SECRET);
-// Owner's Binance details. Set BINANCE_PAY_ID / BINANCE_ADDRESS / BINANCE_NETWORK in Netlify to override them.
+// Default Binance details below; set BINANCE_PAY_ID / BINANCE_ADDRESS / BINANCE_NETWORK in Netlify to override them.
 const manualCfg = () => ({
   payId: process.env.BINANCE_PAY_ID || '545851285',
   address: process.env.BINANCE_ADDRESS || 'TSLY32Nvz9f1VJ1o883TbG3y4wdb1rGDnQ',
@@ -49,7 +48,6 @@ async function syncOrder(o, users, orders) {
       const u = await users.get(o.email);
       if (u) await credit(users, u, o.days, o.id);
       o.status = 'PAID'; o.paid = Date.now();
-      await N.owner('MRK TRADER: membership bought', `${o.email} paid ${o.amount} USDT for ${o.days} days (Binance Pay). Order ${o.id}. Membership is already active.`);
     } else { o.status = 'ERROR'; }
   } else if (data.status === 'EXPIRED') o.status = 'EXPIRED';
   else if (data.status === 'CANCELED') o.status = 'CANCELED';
@@ -110,7 +108,6 @@ exports.handler = async (e) => {
       await refs.set(h, { order: o.id });
       Object.assign(o, { txid, txhash: h, status: 'REVIEW', submitted: Date.now() });
       await orders.set(o.id, o);
-      await N.owner('MRK TRADER: new membership payment to approve', `${user.email} says they paid ${o.amount} USDT for ${o.days} days.\nTXID / order number: ${txid}\nOrder: ${o.id}\n\nCheck your Binance, then open the Admin panel and press Approve.`);
       return A.json(200, { ok: true, order: o });
     }
     if (b.action === 'check') {

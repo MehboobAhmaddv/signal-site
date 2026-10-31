@@ -5,12 +5,14 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-[functions."scan"]
-  schedule = "*/5 * * * *"
-
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "same-origin"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"

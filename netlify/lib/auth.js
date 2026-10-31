@@ -27,7 +27,7 @@ exports.checkPw = (pw, salt, hash) => {
 };
 exports.isAdmin = (e) => !!process.env.ADMIN_EMAIL && exports.key(e) === exports.key(process.env.ADMIN_EMAIL);
 exports.isMember = (u) => exports.isAdmin(u.email) || (u.until || 0) > Date.now();
-exports.freeSymbols = () => (process.env.FREE_SYMBOLS || 'EUR/USD,GBP/USD,BTC/USD,ETH/USD').split(',').map((s) => s.trim().toUpperCase()).filter(Boolean);
+exports.freeSymbols = () => (process.env.FREE_SYMBOLS || 'BTC/USD,EUR/USD').split(',').map((s) => s.trim().toUpperCase()).filter(Boolean);
 exports.canUse = (u, sym) => exports.isMember(u) || exports.freeSymbols().includes(String(sym || '').split('@')[0].toUpperCase());
 exports.PLANS = () => [
   { id: '30', days: 30, price: +process.env.PRICE_30 || 15 },

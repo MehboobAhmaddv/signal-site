@@ -1,33 +1,22 @@
+// Needs env var TD_KEY (free key from twelvedata.com). Without it the site falls back to Demo feed automatically.
 const A = require('../lib/auth');
-const INTERVALS = ['1min', '5min', '15min', '1h'];
-const cache = {}; // short in-memory cache so many visitors share one data request
-
+const OK = ['1min', '5min', '15min', '1h'], cache = {};
 exports.handler = async (e) => {
   const a = await A.authed(e);
   if (!a) return A.json(401, { error: 'Please log in again' });
   const q = e.queryStringParameters || {};
-  // forex/metals/crypto: AAA/BBB   stocks: AAPL or AAPL@NASDAQ
-  if (!/^[A-Z0-9.\-]{1,12}(\/[A-Z]{3,4}|@[A-Za-z0-9]{2,12})?$/.test(q.symbol || '') || !INTERVALS.includes(q.interval)) {
-    return { statusCode: 400, body: '{"error":"Bad symbol or interval"}' };
-  }
-  if (!A.canUse(a.user, q.symbol)) return A.json(403, { error: 'Members only: upgrade to unlock this pair' });
-  if (!process.env.TD_KEY) return { statusCode: 500, body: '{"error":"TD_KEY is not set on the server"}' };
-
-  const key = q.symbol + q.interval;
-  const hit = cache[key];
+  if (!/^[A-Z0-9.\-]{1,12}(\/[A-Z]{3,4})?$/.test(q.symbol || '') || !OK.includes(q.interval))
+    return { statusCode: 400, body: '{"error":"bad request"}' };
+  if (!A.canUse(a.user, q.symbol)) return A.json(403, { error: 'Members only' });
+  if (!process.env.TD_KEY) return { statusCode: 503, body: '{"error":"TD_KEY missing"}' };
+  const k = q.symbol + q.interval, h = cache[k];
   const headers = { 'content-type': 'application/json', 'cache-control': 'private, max-age=15' };
-  if (hit && Date.now() - hit.t < 20000) return { statusCode: 200, headers, body: hit.body };
-
+  if (h && Date.now() - h.t < 15000) return { statusCode: 200, headers, body: h.b };
   try {
-    const [sym, exch] = q.symbol.split('@');
-    const url = `https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(sym)}&interval=${q.interval}` +
-      `&outputsize=1000&order=ASC&timezone=UTC${exch ? '&exchange=' + exch : ''}&apikey=${process.env.TD_KEY}`;
-    const d = await (await fetch(url)).json();
-    if (d.status === 'error') return { statusCode: 502, body: JSON.stringify({ error: d.message }) };
-    const body = JSON.stringify(d.values);
-    cache[key] = { t: Date.now(), body };
-    return { statusCode: 200, headers, body };
-  } catch (err) {
-    return { statusCode: 502, body: '{"error":"Data provider unreachable"}' };
-  }
+    const r = await fetch(`https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(q.symbol)}&interval=${q.interval}&outputsize=1000&order=ASC&timezone=UTC&apikey=${process.env.TD_KEY}`);
+    const d = await r.json();
+    if (d.status === 'error' || !d.values) return { statusCode: 502, body: JSON.stringify({ error: d.message || 'no data' }) };
+    const b = JSON.stringify(d.values); cache[k] = { t: Date.now(), b };
+    return { statusCode: 200, headers, body: b };
+  } catch (err) { return { statusCode: 502, body: '{"error":"provider unreachable"}' }; }
 };

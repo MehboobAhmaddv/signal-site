@@ -4,15 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#060a12">
-<title>Membership · MRK TRADER</title>
+<title>Membership · MRK TRADER™ 🔥</title>
 <link rel="stylesheet" href="theme.css">
-<link rel="stylesheet" href="brand.css">
 <script>if(!localStorage.getItem('ms_tok'))location.replace('login.html?next=membership.html')</script>
 </head>
 <body>
 <div class="bg"><span></span><span></span></div>
 <header class="nav"><div class="navi">
-  <a class="bl" href="index.html"><span class="bn"><span class="mrk" aria-label="MRK TRADER"><i style="--k:0">M</i><i style="--k:1">R</i><i style="--k:2">K</i><i class="sp" style="--k:3">&nbsp;</i><i style="--k:4">T</i><i style="--k:5">R</i><i style="--k:6">A</i><i style="--k:7">D</i><i style="--k:8">E</i><i style="--k:9">R</i></span><span class="livebadge" title="Live"><b></b>LIVE<s aria-hidden="true"><u></u><u></u><u></u></s></span></span></a>
+  <a class="bl" href="index.html"><span class="avw"><span class="av mono">MRK</span></span><span class="bn">MRK <span>TRADER™ 🔥</span></span></a>
   <div class="navr"><a class="nb" href="index.html">← Dashboard</a><button class="nb" id="out" type="button">Log out</button></div>
 </div></header>
 <main class="w">
@@ -35,8 +34,8 @@
   <div class="card rise" style="--i:3">
     <p class="eyebrow">What members get</p>
     <ul class="sub" style="margin:10px 0 0;padding-inline-start:18px;line-height:1.9">
-      <li>All forex, metals, crypto and stock pairs (free accounts: 2 forex and 2 crypto pairs)</li>
-      <li>Premium mode, multi-pair scanner and company search (free accounts: Fast and Relaxed mode only)</li>
+      <li>All forex, metals, crypto and stock pairs (free accounts: BTC/USD and EUR/USD)</li>
+      <li>Multi-pair scanner and company search</li>
       <li>Telegram alerts channel and sound alerts</li>
       <li>Track record, risk tools and CSV export</li>
     </ul>
@@ -49,9 +48,9 @@
 <script>
 const $=id=>document.getElementById(id);
 let INFO=null,timer=null;
-const STAT={PAID:['Paid','u'],PENDING:['Waiting for payment','a'],AWAITING_PAYMENT:['Send payment','a'],REVIEW:['Under review','a'],EXPIRED:['Expired','d'],CANCELED:['Cancelled','d'],ERROR:['Error','d'],REJECTED:['Rejected','d']};
+const STAT={PAID:['✓ Paid','u'],PENDING:['Waiting for payment','a'],AWAITING_PAYMENT:['Send payment','a'],REVIEW:['Under review','a'],EXPIRED:['Expired','d'],CANCELED:['Cancelled','d'],ERROR:['Error','d'],REJECTED:['Rejected','d']};
 $('out').onclick=()=>logout();
-function showUser(u){$('st').textContent=u.admin?'Admin':u.member?'Paid':'Free';$('un').textContent=u.member&&!u.admin?fmtDate(u.until):'–';$('dl').textContent=u.member&&!u.admin?daysLeft(u.until):'–'}
+function showUser(u){$('st').textContent=u.admin?'Admin':u.member?'Member':'Free';$('un').textContent=u.member&&!u.admin?fmtDate(u.until):'–';$('dl').textContent=u.member&&!u.admin?daysLeft(u.until):'–'}
 async function load(){
  const r=await post('pay',{action:'plans'});if(!r.ok){$('pm').className='msg err';$('pm').textContent=r.data.error;return}
  INFO=r.data;setUser(INFO.user);showUser(INFO.user);
@@ -89,7 +88,7 @@ function autoFlow(o){
 function manualFlow(o,mn){
  const box=$('pay');box.innerHTML='';box.appendChild(h('p','eyebrow','Send '+o.amount+' USDT'));
  const g=h('div','');g.style.cssText='display:grid;gap:10px;margin:12px 0';
- const add=(l,v)=>{if(!v)return;const d=h('div','');d.appendChild(h('label','',l));const c=h('div','code',v);c.style.cursor='pointer';c.title='Tap to copy';c.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(v);c.dataset.c=1;c.textContent=v+'  (copied)'};d.appendChild(c);g.appendChild(d)};
+ const add=(l,v)=>{if(!v)return;const d=h('div','');d.appendChild(h('label','',l));const c=h('div','code',v);c.style.cursor='pointer';c.title='Tap to copy';c.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(v);c.dataset.c=1;c.textContent=v+'  ✓ copied'};d.appendChild(c);g.appendChild(d)};
  add('Amount (USDT)',String(o.amount));add('Binance Pay ID',mn&&mn.payId);add('USDT address ('+(mn&&mn.network)+')',mn&&mn.address);add('Reference (put this in the note)',o.id);
  if(mn&&mn.qr){const q=h('img');q.src=mn.qr;q.alt='USDT deposit QR code';q.width=170;q.height=170;q.style.cssText='display:block;margin:4px auto;border-radius:12px;background:#fff;padding:6px';g.insertBefore(q,g.firstChild)}
  box.appendChild(g);box.appendChild(h('p','sub','After sending, paste the transaction ID (TXID) or the Binance Pay order number below. The owner checks it and activates your days, usually within a few hours.'));
@@ -100,7 +99,7 @@ function manualFlow(o,mn){
 async function checkOrder(id,quiet){
  const r=await post('pay',{action:'check',orderId:id});if(!r.ok){if(!quiet&&$('cm')){$('cm').className='msg err';$('cm').textContent=r.data.error}return}
  setUser(r.data.user);showUser(r.data.user);
- if(r.data.order.status==='PAID'){clearInterval(timer);const box=$('pay');box.classList.remove('hide');box.innerHTML='';box.appendChild(h('p','eyebrow','Payment confirmed'));box.appendChild(h('p','sub','Your membership is active until '+fmtDate(r.data.user.until)+'.'));const a=h('a','btn','Open dashboard');a.href='index.html';box.appendChild(a);await orders()}
+ if(r.data.order.status==='PAID'){clearInterval(timer);const box=$('pay');box.classList.remove('hide');box.innerHTML='';box.appendChild(h('p','eyebrow','✓ Payment confirmed'));box.appendChild(h('p','sub','Your membership is active until '+fmtDate(r.data.user.until)+'.'));const a=h('a','btn','Open dashboard');a.href='index.html';box.appendChild(a);await orders()}
  else if(!quiet&&$('cm')){$('cm').className='msg';$('cm').textContent='Not paid yet ('+(r.data.order.bstatus||r.data.order.status)+'). Try again in a minute.'}
 }
 async function orders(){
@@ -115,5 +114,5 @@ async function orders(){
 }
 load();
 </script>
-</body>
+<script src="support.js"></script></body>
 </html>
