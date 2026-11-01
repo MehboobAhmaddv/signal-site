@@ -5,7 +5,7 @@ const db = require('../lib/db');
 
 const DAY = 864e5, OPEN = ['PENDING', 'AWAITING_PAYMENT', 'REVIEW'];
 const autoOn = () => !!(process.env.BINANCE_PAY_KEY && process.env.BINANCE_PAY_SECRET);
-// Default Binance details below; set BINANCE_PAY_ID / BINANCE_ADDRESS / BINANCE_NETWORK in Netlify to override them.
+// Owner's Binance details. Set BINANCE_PAY_ID / BINANCE_ADDRESS / BINANCE_NETWORK in Netlify to override them.
 const manualCfg = () => ({
   payId: process.env.BINANCE_PAY_ID || '545851285',
   address: process.env.BINANCE_ADDRESS || 'TSLY32Nvz9f1VJ1o883TbG3y4wdb1rGDnQ',
