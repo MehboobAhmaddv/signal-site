@@ -18,7 +18,7 @@ exports.open = async (event, name) => {
   if (process.env.MS_FILE_DB) return fileStore(process.env.MS_FILE_DB, name);
   const B = require('@netlify/blobs');
   B.connectLambda(event);
-  const st = B.getStore('ms-' + name);
+  const st = B.getStore({ name: 'ms-' + name, consistency: 'strong' });
   const get = async (k) => await st.get(k, { type: 'json' });
   return {
     get,
